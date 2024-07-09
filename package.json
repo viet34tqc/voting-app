@@ -4,9 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "pnpm --stream -r run dev"
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "dev": "pnpm --stream -r run dev",
+    "prepare": "husky"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^9.6.0",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.7",
+    "prettier": "^3.0.0"
+  }
 }
