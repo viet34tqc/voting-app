@@ -1,42 +1,21 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
+import { CreatePollDto } from './dto/create-poll.dto.js';
+import { JoinPollDto } from './dto/join-poll.dto';
 import { PollsService } from './polls.service';
-import { CreatePollDto } from './dto/create-poll.dto';
-import { UpdatePollDto } from './dto/update-poll.dto';
 
 @Controller('polls')
 export class PollsController {
   constructor(private readonly pollsService: PollsService) {}
 
-  @Post()
+  @Post('create')
   create(@Body() createPollDto: CreatePollDto) {
-    return this.pollsService.create(createPollDto);
+    const poll = this.pollsService.create(createPollDto);
+
+    return poll;
   }
 
-  @Get()
-  findAll() {
-    return this.pollsService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.pollsService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePollDto: UpdatePollDto) {
-    return this.pollsService.update(+id, updatePollDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.pollsService.remove(+id);
+  @Post('join')
+  join(@Body() joinPollDto: JoinPollDto) {
+    return this.pollsService.join(joinPollDto);
   }
 }

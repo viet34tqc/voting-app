@@ -8,3 +8,14 @@
 - After creating the poll, the host sends its ID to other users so they can join and add their own options.
 - Only the host can start and end the poll.
 - After the poll ends, a screen displays the results.
+
+## Flows
+
+### Poll module
+
+- Poll controller extract the topic and the number of votes for each voter in request body and send it to the Poll service
+- Poll service
+  - Create a pollId and userId
+  - Tell Redis to save the poll
+  - Create a JWT from userId and poll data
+  - Send poll data and JWT to Poll Controller
