@@ -2,6 +2,10 @@
 
 ## Tech stack
 
+- BE: NestJs
+- FE: Vite + ReactJs + Tailwind
+- Database: Redis, just for experiment. You can use Postgrest or MySQL instead
+
 ## Features
 
 - The host can create a topic and add options. They can also set the maximum number of participants.
@@ -19,3 +23,4 @@
   - Tell Redis to save the poll
   - Create a JWT from userId and poll data
   - Send poll data and JWT to Poll Controller
+- Poll Provider: connect to redis and return data to Poll service

@@ -9,7 +9,7 @@ import { RedisModule } from './redis/redis.module';
 // Dynamic modules must return an object with the exact same interface, plus one additional property called `module`
 // In the case of Redis, we want to make sure that we connect to Redis before making our Redis client available to the modules that use it. That's why we use `registerAsync`
 
-export const redisModule = RedisModule.registerAsync({
+export const RedisDynamicModule = RedisModule.registerAsync({
   imports: [ConfigModule],
   inject: [ConfigService],
   // configService is get from 'inject' above
