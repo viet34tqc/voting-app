@@ -23,4 +23,4 @@
   - Tell Redis to save the poll
   - Create a JWT from userId and poll data
   - Send poll data and JWT to Poll Controller
-- Poll Provider: connect to redis and return data to Poll service
+- Poll Repository: connect to redis and return data to Poll service
