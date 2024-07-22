@@ -20,14 +20,14 @@ export class PollsRepository {
     votesPerVoter,
     topic,
     pollId,
-    userID,
+    userId,
   }: CreatePollData): Promise<Poll> {
     const initialPoll = {
       id: pollId,
       topic,
       votesPerVoter,
       participants: {},
-      adminID: userID,
+      adminID: userId,
     };
 
     this.logger.log(
@@ -84,15 +84,15 @@ export class PollsRepository {
 
   async addParticipant({
     pollId,
-    userID,
+    userId,
     name,
   }: AddParticipantData): Promise<Poll> {
     this.logger.log(
-      `Attempting to add a participant with userID/name: ${userID}/${name} to pollId: ${pollId}`,
+      `Attempting to add a participant with userId/name: ${userId}/${name} to pollId: ${pollId}`,
     );
 
     const key = `polls:${pollId}`;
-    const participantPath = `.participants.${userID}`;
+    const participantPath = `.participants.${userId}`;
 
     try {
       await this.redisClient.call(
@@ -118,7 +118,7 @@ export class PollsRepository {
       return poll;
     } catch (e) {
       this.logger.error(
-        `Failed to add a participant with userID/name: ${userID}/${name} to pollId: ${pollId}`,
+        `Failed to add a participant with userId/name: ${userId}/${name} to pollId: ${pollId}`,
       );
       throw e;
     }
