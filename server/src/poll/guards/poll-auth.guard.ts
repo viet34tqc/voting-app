@@ -7,6 +7,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
+//Check the JWT validity, decode JWT payload and attach to the request body
 export class PollAuthGuard {
   private readonly logger = new Logger(PollAuthGuard.name);
   constructor(private readonly jwtService: JwtService) {}

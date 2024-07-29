@@ -29,7 +29,7 @@ export class PollService {
 
     const accessToken = this.jwtService.sign(
       {
-        pollID: createdPoll.id,
+        pollId: createdPoll.id,
         name: createPollDto.name,
       },
       {
@@ -52,8 +52,9 @@ export class PollService {
     const joinedPoll = await this.pollRepository.getPoll(joinPollDto.pollId);
     const accessToken = this.jwtService.sign(
       {
-        pollID: joinedPoll.id,
+        pollId: joinedPoll.id,
         name: joinPollDto.name,
+        userId,
       },
       {
         subject: userId,
@@ -65,12 +66,12 @@ export class PollService {
     };
   }
 
-  async rejoin(reJointDto: RejoinPollDto) {
+  async rejoin(rejoinDto: RejoinPollDto) {
     this.logger.debug(
-      `Rejoining poll with ID: ${reJointDto.pollId} for user with Id: ${reJointDto.userId} with name: ${reJointDto.name}`,
+      `Rejoining poll with ID: ${rejoinDto.pollId} for user with Id: ${rejoinDto.userId} with name: ${rejoinDto.name}`,
     );
 
-    const joinedPoll = await this.pollRepository.addParticipant(reJointDto);
+    const joinedPoll = await this.pollRepository.addParticipant(rejoinDto);
 
     return joinedPoll;
   }
