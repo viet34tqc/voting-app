@@ -4,20 +4,20 @@ import { createPollId, createUserId } from 'src/utils';
 import { CreatePollDto } from './dto/create-poll.dto';
 import { JoinPollDto } from './dto/join-poll.dto';
 import { RejoinPollDto } from './dto/rejoin-poll.dto';
-import { PollsRepository } from './polls.repository';
+import { PollRepository } from './poll.repository';
 
 @Injectable()
-export class PollsService {
-  private readonly logger = new Logger(PollsService.name);
+export class PollService {
+  private readonly logger = new Logger(PollService.name);
   constructor(
-    private readonly pollsRepository: PollsRepository,
+    private readonly pollRepository: PollRepository,
     private readonly jwtService: JwtService,
   ) {}
   async create(createPollDto: CreatePollDto) {
     const pollId = createPollId();
     const userId = createUserId();
 
-    const createdPoll = await this.pollsRepository.createPoll({
+    const createdPoll = await this.pollRepository.createPoll({
       ...createPollDto,
       pollId,
       userId,
@@ -49,7 +49,7 @@ export class PollsService {
     this.logger.debug(
       `Fetching poll with ID: ${joinPollDto.pollId} for user with ID: ${userId}`,
     );
-    const joinedPoll = await this.pollsRepository.getPoll(joinPollDto.pollId);
+    const joinedPoll = await this.pollRepository.getPoll(joinPollDto.pollId);
     const accessToken = this.jwtService.sign(
       {
         pollID: joinedPoll.id,
@@ -70,7 +70,7 @@ export class PollsService {
       `Rejoining poll with ID: ${reJointDto.pollId} for user with Id: ${reJointDto.userId} with name: ${reJointDto.name}`,
     );
 
-    const joinedPoll = await this.pollsRepository.addParticipant(reJointDto);
+    const joinedPoll = await this.pollRepository.addParticipant(reJointDto);
 
     return joinedPoll;
   }

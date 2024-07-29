@@ -5,9 +5,9 @@ import { IORedisKey } from 'src/redis/redis.module';
 import { Poll } from 'voting-app-shared';
 import { AddParticipantData, CreatePollData } from './types';
 
-export class PollsRepository {
+export class PollRepository {
   private readonly ttl: string;
-  private readonly logger = new Logger(PollsRepository.name);
+  private readonly logger = new Logger(PollRepository.name);
 
   constructor(
     configService: ConfigService,
@@ -36,7 +36,7 @@ export class PollsRepository {
       }`,
     );
 
-    const key = `polls:${pollId}`;
+    const key = `poll:${pollId}`;
 
     try {
       // We are creating pipeline by using multi()
@@ -60,7 +60,7 @@ export class PollsRepository {
   async getPoll(pollId: string): Promise<Poll> {
     this.logger.log(`Attempting to get poll with: ${pollId}`);
 
-    const key = `polls:${pollId}`;
+    const key = `poll:${pollId}`;
 
     try {
       const currentPoll = (await this.redisClient.call(
@@ -91,7 +91,7 @@ export class PollsRepository {
       `Attempting to add a participant with userId/name: ${userId}/${name} to pollId: ${pollId}`,
     );
 
-    const key = `polls:${pollId}`;
+    const key = `poll:${pollId}`;
     const participantPath = `.participants.${userId}`;
 
     try {
