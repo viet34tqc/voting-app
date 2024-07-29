@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { createPollId, createUserId } from 'src/utils';
 import { CreatePollDto } from './dto/create-poll.dto';
 import { JoinPollDto } from './dto/join-poll.dto';
+import { RejoinPollDto } from './dto/rejoin-poll.dto';
 import { PollsRepository } from './polls.repository';
 
 @Injectable()
@@ -62,5 +63,15 @@ export class PollsService {
       poll: joinedPoll,
       accessToken,
     };
+  }
+
+  async rejoin(reJointDto: RejoinPollDto) {
+    this.logger.debug(
+      `Rejoining poll with ID: ${reJointDto.pollId} for user with Id: ${reJointDto.userId} with name: ${reJointDto.name}`,
+    );
+
+    const joinedPoll = await this.pollsRepository.addParticipant(reJointDto);
+
+    return joinedPoll;
   }
 }

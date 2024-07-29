@@ -10,6 +10,7 @@
 
 - The host can create a topic and add options. They can also set the maximum number of participants.
 - After creating the poll, the host sends its ID to other users so they can join and add their own options.
+- If users have closed the tab, they can re-join via `pollId` and receive the current state of the poll
 - Only the host can start and end the poll.
 - After the poll ends, a screen displays the results.
 
@@ -21,6 +22,6 @@
 - Poll service
   - Create a pollId and userId
   - Tell Redis to save the poll
-  - Create a JWT from userId and poll data
+  - Create a JWT from userId and poll data. The JWT is used is authorized the user, in case they lost the connection and want to rejoin the poll
   - Send poll data and JWT to Poll Controller
 - Poll Repository: connects to redis (create poll, join poll) and returns data to Poll service
