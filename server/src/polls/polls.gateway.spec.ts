@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { PollGateway } from './poll.gateway';
+import { PollGateway } from './polls.gateway';
 
 describe('PollGateway', () => {
   let gateway: PollGateway;

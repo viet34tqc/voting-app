@@ -8,8 +8,8 @@ import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 //Check the JWT validity, decode JWT payload and attach to the request body
-export class PollAuthGuard {
-  private readonly logger = new Logger(PollAuthGuard.name);
+export class PollsAuthGuard {
+  private readonly logger = new Logger(PollsAuthGuard.name);
   constructor(private readonly jwtService: JwtService) {}
   canActivate(context: ExecutionContext): boolean | Promise<boolean> {
     const request = context.switchToHttp().getRequest();
@@ -36,7 +36,5 @@ export class PollAuthGuard {
     } catch {
       throw new ForbiddenException('Invalid access token');
     }
-
-    return false;
   }
 }

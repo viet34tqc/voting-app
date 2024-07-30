@@ -1,31 +1,31 @@
 import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
 import { CreatePollDto } from './dto/create-poll.dto.js';
-import { JoinPollDto } from './dto/join-poll.dto.js';
-import { PollAuthGuard } from './guards/poll-auth.guard.js';
-import { PollService } from './poll.service.js';
+import { JoinPollDto } from './dto/join-poll.dto';
+import { PollsAuthGuard } from './guards/polls-auth.guard.js';
+import { PollsService } from './polls.service';
 import { RequestWithAuth } from './types.js';
 
-@Controller('poll')
-export class PollController {
-  constructor(private readonly pollService: PollService) {}
+@Controller('polls')
+export class PollsController {
+  constructor(private readonly pollsService: PollsService) {}
 
   @Post('create')
   create(@Body() createPollDto: CreatePollDto) {
-    const poll = this.pollService.create(createPollDto);
+    const poll = this.pollsService.create(createPollDto);
 
     return poll;
   }
 
   @Post('join')
   join(@Body() joinPollDto: JoinPollDto) {
-    return this.pollService.join(joinPollDto);
+    return this.pollsService.join(joinPollDto);
   }
 
-  @UseGuards(PollAuthGuard)
+  @UseGuards(PollsAuthGuard)
   @Post('rejoin')
   async rejoin(@Req() request: RequestWithAuth) {
     const { userId, pollId, name } = request;
-    const rejoinPollResponse = await this.pollService.rejoin({
+    const rejoinPollResponse = await this.pollsService.rejoin({
       userId,
       pollId,
       name,

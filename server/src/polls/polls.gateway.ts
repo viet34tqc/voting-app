@@ -7,14 +7,14 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Namespace, Socket } from 'socket.io';
-import { PollService } from './poll.service';
+import { PollsService } from './polls.service';
 
 @WebSocketGateway()
-export class PollGateway
+export class PollsGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
-  private readonly logger = new Logger(PollGateway.name);
-  constructor(private readonly pollService: PollService) {}
+  private readonly logger = new Logger(PollsGateway.name);
+  constructor(private readonly pollService: PollsService) {}
 
   // We are using socket io namespace to allow multiple polls using single connection
   @WebSocketServer()
