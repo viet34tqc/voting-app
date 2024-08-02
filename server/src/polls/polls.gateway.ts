@@ -6,8 +6,9 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { Namespace, Socket } from 'socket.io';
+import { Namespace } from 'socket.io';
 import { PollsService } from './polls.service';
+import { SocketWithAuth } from './types';
 
 // We can connect to ws via ws://localhost:8000/
 // By default, the port of ws is equal to the port of the app
@@ -26,14 +27,17 @@ export class PollsGateway
   afterInit(): void {
     this.logger.log(`Websocket Gateway initialized.`);
   }
-  handleConnection(client: Socket) {
+  handleConnection(client: SocketWithAuth) {
     const sockets = this.io.sockets;
     this.logger.log(`Client connected: ${client.id}`);
     this.logger.debug(`Number of connected sockets: ${sockets.size}`);
+    this.logger.debug(
+      `Socket connected with userId: ${client.userId}, pollID: ${client.pollId}, and name: "${client.name}"`,
+    );
 
     this.io.emit('hello', `from ${client.id}`);
   }
-  handleDisconnect(client: Socket) {
+  handleDisconnect(client: SocketWithAuth) {
     const sockets = this.io.sockets;
     this.logger.log(`Client disconected: ${client.id}`);
     this.logger.debug(`Number of connected sockets: ${sockets.size}`);
