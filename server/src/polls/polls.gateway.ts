@@ -9,7 +9,9 @@ import {
 import { Namespace, Socket } from 'socket.io';
 import { PollsService } from './polls.service';
 
-@WebSocketGateway()
+// We can connect to ws via ws://localhost:8000/
+// By default, the port of ws is equal to the port of the app
+@WebSocketGateway(8000, { namespace: '/polls' })
 export class PollsGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
@@ -28,6 +30,8 @@ export class PollsGateway
     const sockets = this.io.sockets;
     this.logger.log(`Client connected: ${client.id}`);
     this.logger.debug(`Number of connected sockets: ${sockets.size}`);
+
+    this.io.emit('hello', `from ${client.id}`);
   }
   handleDisconnect(client: Socket) {
     const sockets = this.io.sockets;

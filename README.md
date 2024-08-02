@@ -10,6 +10,7 @@
 
 - The host can create a topic and add options. They can also set the maximum number of participants.
 - After creating the poll, the host sends its ID to other users so they can join and add their own options.
+- Users join the poll via Websocket.
 - If users have closed the tab, they can re-join via `pollId` and receive the current state of the poll
 - Only the host can start and end the poll.
 - After the poll ends, a screen displays the results.
