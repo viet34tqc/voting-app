@@ -29,7 +29,7 @@ export class PollsAuthGuard {
 
     try {
       const payload = this.jwtService.verify(accessToken);
-      request.userId = payload.userId;
+      request.userId = payload.sub;
       request.pollId = payload.pollId;
       request.name = payload.name;
       return true;

@@ -54,7 +54,6 @@ export class PollsService {
       {
         pollId: joinedPoll.id,
         name: joinPollDto.name,
-        userId,
       },
       {
         subject: userId,
