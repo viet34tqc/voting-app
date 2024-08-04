@@ -32,7 +32,7 @@ export class PollsGateway
     this.logger.log(`Client connected: ${client.id}`);
     this.logger.debug(`Number of connected sockets: ${sockets.size}`);
     this.logger.debug(
-      `Socket connected with userId: ${client.userId}, pollID: ${client.pollId}, and name: "${client.name}"`,
+      `Socket connected with userId: ${client.userId}, pollId: ${client.pollId}, and name: "${client.name}"`,
     );
 
     this.io.emit('hello', `from ${client.id}`);

@@ -34,6 +34,7 @@ export class SocketIOAdapter extends IoAdapter {
     };
 
     // Retrieve an instance of injectable provider. In this case, it's JwtService
+    // Although, we import JwtService in poll module, app can still look for it in child module
     const jwtService = this.app.get(JwtService);
     const server = super.createIOServer(port, optionsWithCORS);
 
@@ -49,6 +50,7 @@ export class SocketIOAdapter extends IoAdapter {
 const createTokenMiddleware =
   (jwtService: JwtService, logger) => (socket: SocketWithAuth, next) => {
     // The client can send credentials with the auth option. And those credentials can be accessed in the handshake object on the server-side:
+    // The handshake.headers['token'] is only used for testing on Postman, cause it's not possible for Postman to get the token from handshake.auth
     const token =
       socket.handshake.auth.token || socket.handshake.headers['token'];
 
@@ -57,7 +59,7 @@ const createTokenMiddleware =
     try {
       const payload = jwtService.verify(token);
       socket.userId = payload.sub;
-      socket.pollId = payload.pollID;
+      socket.pollId = payload.pollId;
       socket.name = payload.name;
       // If everything's ok, go next();
       next();
