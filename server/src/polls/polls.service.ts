@@ -5,6 +5,7 @@ import { CreatePollDto } from './dto/create-poll.dto';
 import { JoinPollDto } from './dto/join-poll.dto';
 import { RejoinPollDto } from './dto/rejoin-poll.dto';
 import { PollsRepository } from './polls.repository';
+import { AddParticipantData } from './types';
 
 @Injectable()
 export class PollsService {
@@ -73,5 +74,17 @@ export class PollsService {
     const joinedPoll = await this.pollsRepository.addParticipant(rejoinDto);
 
     return joinedPoll;
+  }
+
+  addParticipant(addParticipant: AddParticipantData) {
+    return this.pollsRepository.addParticipant(addParticipant);
+  }
+  async removeParticipant(pollId: string, userId: string) {
+    const poll = await this.pollsRepository.getPoll(pollId);
+
+    // Only remove if the poll hasn't started yet
+    if (!poll.hasStarted) {
+      return this.pollsRepository.removeParticipant(pollId, userId);
+    }
   }
 }

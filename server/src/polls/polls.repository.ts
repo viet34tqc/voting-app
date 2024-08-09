@@ -1,5 +1,6 @@
 import { Inject, InternalServerErrorException, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import e from 'express';
 import Redis from 'ioredis';
 import { IORedisKey } from 'src/redis/redis.module';
 import { Poll } from 'voting-app-shared';
@@ -28,6 +29,7 @@ export class PollsRepository {
       votesPerVoter,
       participants: {},
       adminID: userId,
+      hasStarted: false,
     };
 
     this.logger.log(
@@ -102,25 +104,36 @@ export class PollsRepository {
         JSON.stringify(name),
       );
 
-      const pollJSON = (await this.redisClient.call(
-        'JSON.GET',
-        key,
-        '.',
-      )) as string;
-
-      const poll = JSON.parse(pollJSON) as Poll;
+      const updatedPoll = await this.getPoll(pollId);
 
       this.logger.debug(
         `Current Participants for pollId: ${pollId}:`,
-        poll.participants,
+        updatedPoll.participants,
       );
-
-      return poll;
+      return updatedPoll;
     } catch (e) {
       this.logger.error(
         `Failed to add a participant with userId/name: ${userId}/${name} to pollId: ${pollId}`,
       );
       throw e;
+    }
+  }
+
+  async removeParticipant(pollId: string, userId: string) {
+    this.logger.log(`Removing userId: ${userId} from pollId: ${pollId}`);
+
+    const key = `polls:${pollId}`;
+    const participantPath = `.participants.${userId}`;
+
+    try {
+      await this.redisClient.call('JSON.DEL', key, participantPath);
+      return this.getPoll(pollId);
+    } catch (error) {
+      this.logger.error(
+        `Failed to remove userID: ${userId} from poll: ${pollId}`,
+        e,
+      );
+      throw new InternalServerErrorException('Failed to remove participant');
     }
   }
 }
