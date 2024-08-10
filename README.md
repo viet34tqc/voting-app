@@ -30,6 +30,6 @@
 ### Websocket
 
 - Poll gateway are in charged of handling websocket connection. We are using Socket.io in this project
-- Websocket authentication: we want to ensure that only the user with JWT token can connect. In this case, we use an adapter
+- Websocket authentication: we want to ensure that only the user with JWT token can connect. In this case, we use an adapter to:
   - Handle the authentication using socket io middleware
   - Handle CORS. Of course, we can set CORS directly in the gateway but we aren't able to get the CLIENT_HOST from .env file. By using adapter, we can extract the environment variable from ConfigService

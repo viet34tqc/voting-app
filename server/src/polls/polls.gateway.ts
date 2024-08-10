@@ -10,8 +10,9 @@ import { Namespace } from 'socket.io';
 import { PollsService } from './polls.service';
 import { SocketWithAuth } from './types';
 
-// We can connect to ws via ws://localhost:8000/
-// By default, the port of ws is equal to the port of the app
+// We can connect to ws via ws://localhost:8000/polls or ws://localhost:8000
+// By default, the port of ws is equal to the port of the server
+// Namespace is optional, however it's recommended to use it
 @WebSocketGateway(8000, { namespace: '/polls' })
 export class PollsGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
@@ -19,7 +20,8 @@ export class PollsGateway
   private readonly logger = new Logger(PollsGateway.name);
   constructor(private readonly pollsService: PollsService) {}
 
-  // We are using socket io namespace to allow multiple polls using single connection
+  // https://docs.nestjs.com/websockets/gateways#server-and-namespace
+  // This decorator injects the WebSocket server instance (Socket.io instance) into the gateway, enabling direct communication with connected clients.
   @WebSocketServer()
   io: Namespace;
 
@@ -55,7 +57,9 @@ export class PollsGateway
 
     // Whenever a user joins the room, we updated poll
     // And send it back to all clients
-    // .to(roomName) to specify that we only want to send the message to clients connected to this room
+    // .to(roomName) to specify that we only want to send the message to all connected clients in roomName
+    // The clients must listen to poll_updated even
+    // This is broadcasting technique
     this.io.to(roomName).emit('poll_updated', updatedPoll);
   }
   async handleDisconnect(client: SocketWithAuth) {
@@ -68,7 +72,7 @@ export class PollsGateway
     );
 
     const roomName = pollId;
-    const clientCount = this.io.adapter.rooms.get(roomName).size ?? 0;
+    const clientCount = this.io.adapter.rooms.get(roomName)?.size ?? 0;
 
     this.logger.log(`Client disconected: ${client.id}`);
     this.logger.debug(`Number of connected sockets: ${sockets.size}`);

@@ -38,6 +38,7 @@ export class SocketIOAdapter extends IoAdapter {
     const jwtService = this.app.get(JwtService);
     const server = super.createIOServer(port, optionsWithCORS);
 
+    // server.of('polls') returns the ws server instance.
     server.of('polls').use(createTokenMiddleware(jwtService, this.logger));
 
     // we need to return this, even though the signature says it returns void
