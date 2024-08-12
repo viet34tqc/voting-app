@@ -130,6 +130,8 @@ export class PollsGateway
     this.io.to(client.pollId).emit('poll_updated', updatedPoll);
   }
 
+  @SubscribeMessage('remove_nomination')
+  @UseGuards(PollsWsGuard)
   async removeNomination(
     @MessageBody('id') nominationId: string,
     @ConnectedSocket() client: SocketWithAuth,
