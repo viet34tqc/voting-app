@@ -4,7 +4,7 @@ import e from 'express';
 import Redis from 'ioredis';
 import { IORedisKey } from 'src/redis/redis.module';
 import { Poll } from 'voting-app-shared';
-import { AddParticipantData, CreatePollData } from './types';
+import { AddNominationData, AddParticipantData, CreatePollData } from './types';
 
 export class PollsRepository {
   private readonly ttl: string;
@@ -79,8 +79,8 @@ export class PollsRepository {
 
       return JSON.parse(currentPoll);
     } catch (e) {
-      this.logger.error(`Failed to get pollId ${pollId}`);
-      throw e;
+      this.logger.error(`Failed to get pollId ${pollId}`, e);
+      throw new InternalServerErrorException(`Failed to get pollId ${pollId}`);
     }
   }
 
@@ -114,8 +114,45 @@ export class PollsRepository {
     } catch (e) {
       this.logger.error(
         `Failed to add a participant with userId/name: ${userId}/${name} to pollId: ${pollId}`,
+        e,
       );
-      throw e;
+      throw new InternalServerErrorException(
+        `Failed to add a participant with userId/name: ${userId}/${name} to pollId: ${pollId}`,
+      );
+    }
+  }
+
+  async addNomination({ pollId, nominationId, nomination }: AddNominationData) {
+    this.logger.log(
+      `Attempting to add a nomination with nominationId/nomination: ${nominationId}/${nomination.text} to pollId: ${pollId}`,
+    );
+
+    const key = `polls:${pollId}`;
+    const nominationPath = `.nominations.${nominationId}`;
+
+    try {
+      await this.redisClient.call(
+        'JSON.SET',
+        key,
+        nominationPath,
+        JSON.stringify(nomination),
+      );
+
+      const updatedPoll = await this.getPoll(pollId);
+
+      this.logger.debug(
+        `Current Participants for pollId: ${pollId}:`,
+        updatedPoll.participants,
+      );
+      return updatedPoll;
+    } catch (error) {
+      this.logger.error(
+        `Failed to add a nomination with nominationId/text: ${nominationId}/${nomination.text} to pollId: ${pollId}`,
+        e,
+      );
+      throw new InternalServerErrorException(
+        `Failed to add a nomination with nominationId/text: ${nominationId}/${nomination.text} to pollId: ${pollId}`,
+      );
     }
   }
 
@@ -134,6 +171,28 @@ export class PollsRepository {
         e,
       );
       throw new InternalServerErrorException('Failed to remove participant');
+    }
+  }
+
+  async removeNomination(pollId: string, nominationId: string) {
+    this.logger.log(
+      `Removing nomination: ${nominationId} from pollId: ${pollId}`,
+    );
+
+    const key = `polls:${pollId}`;
+    const participantPath = `.nominations.${nominationId}`;
+
+    try {
+      await this.redisClient.call('JSON.DEL', key, participantPath);
+      return this.getPoll(pollId);
+    } catch (error) {
+      this.logger.error(
+        `Failed to remove nominationId: ${nominationId} from poll: ${pollId}`,
+        e,
+      );
+      throw new InternalServerErrorException(
+        `Failed to remove nominationId: ${nominationId} from poll: ${pollId}`,
+      );
     }
   }
 }

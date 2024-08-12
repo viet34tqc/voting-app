@@ -10,6 +10,7 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Namespace } from 'socket.io';
+import { NominationDto } from './dto/nomination.dto';
 import { PollsWsGuard } from './guards/polls-ws.guard';
 import { PollsService } from './polls.service';
 import { SocketWithAuth } from './types';
@@ -109,5 +110,39 @@ export class PollsGateway
     if (updatedPoll) {
       this.io.to(client.pollId).emit('poll_updated', updatedPoll);
     }
+  }
+
+  @SubscribeMessage('nominate')
+  async nominate(
+    @MessageBody() nomination: NominationDto,
+    @ConnectedSocket() client: SocketWithAuth,
+  ) {
+    this.logger.debug(
+      `Attempting to add nomination for user ${client.userId} to poll ${client.pollId}\n${nomination.text}`,
+    );
+
+    const updatedPoll = await this.pollsService.addNomination({
+      pollId: client.pollId,
+      userId: client.userId,
+      text: nomination.text,
+    });
+
+    this.io.to(client.pollId).emit('poll_updated', updatedPoll);
+  }
+
+  async removeNomination(
+    @MessageBody('id') nominationId: string,
+    @ConnectedSocket() client: SocketWithAuth,
+  ) {
+    this.logger.debug(
+      `Attempting to remove nomination ${nominationId} from poll ${client.pollId}`,
+    );
+
+    const updatedPoll = await this.pollsService.removeNomination(
+      client.pollId,
+      nominationId,
+    );
+
+    this.io.to(client.pollId).emit('poll_updated', updatedPoll);
   }
 }
