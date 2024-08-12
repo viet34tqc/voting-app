@@ -1,12 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { createPollId, createUserId } from 'src/utils';
 import { CreatePollDto } from './dto/create-poll.dto';
 import { JoinPollDto } from './dto/join-poll.dto';
 import { RejoinPollDto } from './dto/rejoin-poll.dto';
 import { PollsRepository } from './polls.repository';
 import { AddNominationField, AddParticipantData } from './types';
-import { createNominationId } from './utils';
+import { createNominationId, createPollId, createUserId } from './utils';
 
 @Injectable()
 export class PollsService {
