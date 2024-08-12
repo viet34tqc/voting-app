@@ -28,7 +28,7 @@ export class PollsRepository {
       topic,
       votesPerVoter,
       participants: {},
-      adminID: userId,
+      adminId: userId,
       hasStarted: false,
     };
 

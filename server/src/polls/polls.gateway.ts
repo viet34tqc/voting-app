@@ -1,12 +1,16 @@
-import { Logger } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
 import {
+  ConnectedSocket,
+  MessageBody,
   OnGatewayConnection,
   OnGatewayDisconnect,
   OnGatewayInit,
+  SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Namespace } from 'socket.io';
+import { PollsWsGuard } from './guards/polls-ws.guard';
 import { PollsService } from './polls.service';
 import { SocketWithAuth } from './types';
 
@@ -29,6 +33,8 @@ export class PollsGateway
   afterInit(): void {
     this.logger.log(`Websocket Gateway initialized.`);
   }
+
+  // Client has type SocketWithAuth because we have added customized payload to the socket in adapter
   async handleConnection(client: SocketWithAuth) {
     const sockets = this.io.sockets;
     this.logger.log(`Client connected: ${client.id}`);
@@ -40,7 +46,7 @@ export class PollsGateway
     const roomName = client.pollId;
     client.join(roomName);
 
-    const connectedClients = this.io.adapter.rooms.get(roomName).size;
+    const connectedClients = this.io.adapter.rooms?.get(roomName).size ?? 0;
 
     this.logger.debug(
       `userID: ${client.userId} joined room with name: ${roomName}`,
@@ -55,10 +61,10 @@ export class PollsGateway
       name: client.name,
     });
 
-    // Whenever a user joins the room, we updated poll
+    // Whenever a user joins the room, we update poll
     // And send it back to all clients
     // .to(roomName) to specify that we only want to send the message to all connected clients in roomName
-    // The clients must listen to poll_updated even
+    // The clients must listen to poll_updated event
     // This is broadcasting technique
     this.io.to(roomName).emit('poll_updated', updatedPoll);
   }
@@ -82,6 +88,26 @@ export class PollsGateway
 
     if (updatedPoll) {
       this.io.to(pollId).emit('poll_updated', updatedPoll);
+    }
+  }
+
+  @UseGuards(PollsWsGuard)
+  @SubscribeMessage('remove_participant')
+  async removeParticipant(
+    @MessageBody('id') id: string,
+    @ConnectedSocket() client: SocketWithAuth,
+  ) {
+    this.logger.debug(
+      `Attempting to remove participant ${id} from poll ${client.pollId}`,
+    );
+
+    const updatedPoll = await this.pollsService.removeParticipant(
+      client.pollId,
+      id,
+    );
+
+    if (updatedPoll) {
+      this.io.to(client.pollId).emit('poll_updated', updatedPoll);
     }
   }
 }

@@ -1,4 +1,5 @@
 import {
+  CanActivate,
   ExecutionContext,
   ForbiddenException,
   Injectable,
@@ -8,7 +9,7 @@ import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 //Check the JWT validity, decode JWT payload and attach to the request body
-export class PollsAuthGuard {
+export class PollsAuthGuard implements CanActivate {
   private readonly logger = new Logger(PollsAuthGuard.name);
   constructor(private readonly jwtService: JwtService) {}
   canActivate(context: ExecutionContext): boolean | Promise<boolean> {

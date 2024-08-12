@@ -87,4 +87,8 @@ export class PollsService {
       return this.pollsRepository.removeParticipant(pollId, userId);
     }
   }
+
+  async getPoll(pollId: string) {
+    return this.pollsRepository.getPoll(pollId);
+  }
 }

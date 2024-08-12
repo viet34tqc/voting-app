@@ -7,7 +7,7 @@ export type Poll = {
   topic: string
   votesPerVoter: number
   participants: Participants
-  adminID: string
+  adminId: string
   // We use this flag to lock the user so he can not leave the poll when the poll has started
   hasStarted: boolean
 }
