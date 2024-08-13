@@ -1,12 +1,17 @@
-import { CanActivate, ExecutionContext, Logger } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  Logger,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { WsUnauthorizedException } from '../exceptions/ws-exceptions';
 import { PollsService } from '../polls.service';
-import { PollsAuthGuard } from './polls-auth.guard';
 
 // This guard checks if the user is admin or not
+@Injectable()
 export class PollsWsGuard implements CanActivate {
-  private readonly logger = new Logger(PollsAuthGuard.name);
+  private readonly logger = new Logger(PollsWsGuard.name);
   constructor(
     private readonly pollsService: PollsService,
     private readonly jwtService: JwtService,
@@ -15,6 +20,7 @@ export class PollsWsGuard implements CanActivate {
   async canActivate(context: ExecutionContext) {
     const request = context.switchToWs().getClient();
 
+    console.log('pollsService', this.pollsService);
     // fallback to token header for postman testing
     const token =
       request.handshake.auth.token || request.handshake.headers['token'];
@@ -31,7 +37,7 @@ export class PollsWsGuard implements CanActivate {
       const poll = await this.pollsService.getPoll(pollId);
 
       if (sub !== poll.adminId) {
-        throw new WsUnauthorizedException('Admin privileges required');
+        throw new WsUnauthorizedException('Admin privileges required1');
       }
 
       return true;

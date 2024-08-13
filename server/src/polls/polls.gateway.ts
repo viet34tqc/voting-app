@@ -1,4 +1,10 @@
-import { Logger, UseGuards } from '@nestjs/common';
+import {
+  Logger,
+  UseFilters,
+  UseGuards,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import {
   ConnectedSocket,
   MessageBody,
@@ -11,6 +17,7 @@ import {
 } from '@nestjs/websockets';
 import { Namespace } from 'socket.io';
 import { NominationDto } from './dto/nomination.dto';
+import { WsAllExceptionsFilter } from './exceptions/ws-exceptions';
 import { PollsWsGuard } from './guards/polls-ws.guard';
 import { PollsService } from './polls.service';
 import { SocketWithAuth } from './types';
@@ -19,6 +26,8 @@ import { SocketWithAuth } from './types';
 // By default, the port of ws is equal to the port of the server
 // Namespace is optional, however it's recommended to use it
 @WebSocketGateway(8000, { namespace: '/polls' })
+@UsePipes(new ValidationPipe())
+@UseFilters(new WsAllExceptionsFilter())
 export class PollsGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
@@ -130,8 +139,8 @@ export class PollsGateway
     this.io.to(client.pollId).emit('poll_updated', updatedPoll);
   }
 
-  @SubscribeMessage('remove_nomination')
   @UseGuards(PollsWsGuard)
+  @SubscribeMessage('remove_nomination')
   async removeNomination(
     @MessageBody('id') nominationId: string,
     @ConnectedSocket() client: SocketWithAuth,
