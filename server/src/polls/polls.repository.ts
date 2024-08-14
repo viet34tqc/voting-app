@@ -7,8 +7,8 @@ import { Poll } from 'voting-app-shared';
 import {
   AddNominationData,
   AddParticipantData,
-  AddParticipantRankingsData,
   CreatePollData,
+  voteNominationsData,
 } from './types';
 
 export class PollsRepository {
@@ -34,7 +34,7 @@ export class PollsRepository {
       votesPerVoter,
       participants: {},
       nominations: {},
-      rankings: {},
+      votes: {},
       adminId: userId,
       hasStarted: false,
     };
@@ -223,33 +223,31 @@ export class PollsRepository {
     }
   }
 
-  async addParticpantRankings({
-    pollId,
-    userId,
-    rankings,
-  }: AddParticipantRankingsData) {
+  async voteNominations({ pollId, userId, votes }: voteNominationsData) {
     this.logger.log(
-      `Attempting add participant rankings for userId: ${userId} to poll: ${pollId}`,
-      rankings,
+      `Attempting add votes for userId: ${userId} to poll: ${pollId}`,
+      votes,
     );
 
     const key = `polls:${pollId}`;
-    const rankingsPath = `.rankings.${userId}`;
+    const votesPath = `.votes.${userId}`;
 
     try {
       await this.redisClient.call(
         'JSON.SET',
         key,
-        rankingsPath,
-        JSON.stringify(rankings),
+        votesPath,
+        JSON.stringify(votes),
       );
+
+      return this.getPoll(pollId);
     } catch (error) {
       this.logger.error(
-        `Failed to add a rankings for userId/name: ${userId}/ to pollId: ${pollId}`,
+        `Failed to add a votes for userId/name: ${userId}/ to pollId: ${pollId}`,
         error,
       );
       throw new InternalServerErrorException(
-        `Failed to add a rankings for userId/name: ${userId}/ to pollId: ${pollId}`,
+        `Failed to add a votes for userId/name: ${userId}/ to pollId: ${pollId}`,
       );
     }
   }

@@ -7,7 +7,7 @@ import { PollsRepository } from './polls.repository';
 import {
   AddNominationField,
   AddParticipantData,
-  AddParticipantRankingsData,
+  voteNominationsData,
 } from './types';
 import { createNominationId, createPollId, createUserId } from './utils';
 
@@ -116,15 +116,15 @@ export class PollsService {
     return this.pollsRepository.startPoll(pollId);
   }
 
-  async addParticipantRankings(rankingsData: AddParticipantRankingsData) {
-    const hasPollStarted = this.pollsRepository.getPoll(rankingsData.pollId);
+  async voteNominations(votesData: voteNominationsData) {
+    const votingPoll = await this.pollsRepository.getPoll(votesData.pollId);
 
-    if (!hasPollStarted) {
+    if (!votingPoll.hasStarted) {
       throw new BadRequestException(
         'Participants cannot rank until the poll has started.',
       );
     }
 
-    return this.pollsRepository.addParticpantRankings(rankingsData);
+    return this.pollsRepository.voteNominations(votesData);
   }
 }

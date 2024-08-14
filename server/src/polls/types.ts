@@ -29,10 +29,10 @@ export type AddNominationField = {
   text: string;
 };
 
-export type AddParticipantRankingsData = {
+export type voteNominationsData = {
   pollId: string;
   userId: string;
-  rankings: NominationId[];
+  votes: NominationId[];
 };
 
 // We are adding the AuthPayload to the Request type so that we can use it in the guards
