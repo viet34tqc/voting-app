@@ -156,4 +156,13 @@ export class PollsGateway
 
     this.io.to(client.pollId).emit('poll_updated', updatedPoll);
   }
+
+  @UseGuards(PollsWsGuard)
+  @SubscribeMessage('start_poll')
+  async startPoll(@ConnectedSocket() client: SocketWithAuth) {
+    this.logger.debug(`Attempting to start voting for poll: ${client.pollId}`);
+    const updatedPoll = this.pollsService.getPoll(client.pollId);
+
+    this.io.to(client.pollId).emit('poll_updated', updatedPoll);
+  }
 }

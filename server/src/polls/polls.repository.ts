@@ -29,6 +29,7 @@ export class PollsRepository {
       votesPerVoter,
       participants: {},
       nominations: {},
+      rankings: {},
       adminId: userId,
       hasStarted: false,
     };
@@ -194,6 +195,25 @@ export class PollsRepository {
       throw new InternalServerErrorException(
         `Failed to remove nominationId: ${nominationId} from poll: ${pollId}`,
       );
+    }
+  }
+
+  async startPoll(pollId: string) {
+    this.logger.log(`Starting poll: ${pollId}`);
+    const key = `polls:${pollId}`;
+
+    try {
+      await this.redisClient.call(
+        'JSON.SET',
+        key,
+        '.hasStarted',
+        JSON.stringify(true),
+      );
+
+      return this.getPoll(pollId);
+    } catch (error) {
+      this.logger.error(`Failed to start poll: ${pollId}`, e);
+      throw new InternalServerErrorException(`Failed to start poll: ${pollId}`);
     }
   }
 }

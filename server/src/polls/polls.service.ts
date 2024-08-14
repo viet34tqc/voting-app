@@ -107,4 +107,8 @@ export class PollsService {
   async getPoll(pollId: string) {
     return this.pollsRepository.getPoll(pollId);
   }
+
+  async startPoll(pollId: string) {
+    return this.pollsRepository.startPoll(pollId);
+  }
 }

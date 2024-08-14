@@ -7,8 +7,14 @@ export type Nomination = {
   text: string
 }
 
+type NominationId = string
+
 export type Nominations = {
-  [nominationId: string]: Nomination
+  [nominationId: NominationId]: Nomination
+}
+
+export type Rankings = {
+  [userId: string]: NominationId[]
 }
 
 export type Poll = {
