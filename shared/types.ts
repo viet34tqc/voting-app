@@ -7,7 +7,7 @@ export type Nomination = {
   text: string
 }
 
-type NominationId = string
+export type NominationId = string
 
 export type Nominations = {
   [nominationId: NominationId]: Nomination

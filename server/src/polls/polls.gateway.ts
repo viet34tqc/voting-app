@@ -16,6 +16,7 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Namespace } from 'socket.io';
+import { NominationId } from 'voting-app-shared';
 import { NominationDto } from './dto/nomination.dto';
 import { WsAllExceptionsFilter } from './exceptions/ws-exceptions';
 import { PollsWsGuard } from './guards/polls-ws.guard';
@@ -157,11 +158,20 @@ export class PollsGateway
     this.io.to(client.pollId).emit('poll_updated', updatedPoll);
   }
 
-  @UseGuards(PollsWsGuard)
   @SubscribeMessage('start_poll')
-  async startPoll(@ConnectedSocket() client: SocketWithAuth) {
-    this.logger.debug(`Attempting to start voting for poll: ${client.pollId}`);
-    const updatedPoll = this.pollsService.getPoll(client.pollId);
+  async addParticipantRankings(
+    @ConnectedSocket() client: SocketWithAuth,
+    @MessageBody('rankings') rankings: NominationId[],
+  ) {
+    this.logger.debug(
+      `Submitting votes for user: ${client.userId} belonging to pollId: "${client.pollId}"`,
+    );
+
+    const updatedPoll = await this.pollsService.addParticipantRankings({
+      pollId: client.pollId,
+      userId: client.userId,
+      rankings,
+    });
 
     this.io.to(client.pollId).emit('poll_updated', updatedPoll);
   }
