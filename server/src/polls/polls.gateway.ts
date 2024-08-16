@@ -184,4 +184,24 @@ export class PollsGateway
 
     this.io.to(client.pollId).emit('poll_updated', updatedPoll);
   }
+
+  @UseGuards(PollsWsGuard)
+  @SubscribeMessage('cancel_poll')
+  async cancelPoll(@ConnectedSocket() client: SocketWithAuth) {
+    this.logger.debug(`Closing poll: ${client.pollId} and computing results`);
+
+    await this.pollsService.cancelPoll(client.pollId);
+
+    this.io.to(client.pollId).emit('poll_cancelled', 'Poll has been canceled');
+  }
+
+  @UseGuards(PollsWsGuard)
+  @SubscribeMessage('close_poll')
+  async closePoll(@ConnectedSocket() client: SocketWithAuth): Promise<void> {
+    this.logger.debug(`Closing poll: ${client.pollId} and computing results`);
+
+    const updatedPoll = await this.pollsService.addResults(client.pollId);
+
+    this.io.to(client.pollId).emit('poll_updated', updatedPoll);
+  }
 }

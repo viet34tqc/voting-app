@@ -9,7 +9,12 @@ import {
   AddParticipantData,
   voteNominationsData,
 } from './types';
-import { createNominationId, createPollId, createUserId } from './utils';
+import {
+  createNominationId,
+  createPollId,
+  createUserId,
+  getResults,
+} from './utils';
 
 @Injectable()
 export class PollsService {
@@ -126,5 +131,21 @@ export class PollsService {
     }
 
     return this.pollsRepository.voteNominations(votesData);
+  }
+
+  async addResults(pollId: string) {
+    const poll = await this.pollsRepository.getPoll(pollId);
+
+    const results = getResults(
+      poll.votes,
+      poll.nominations,
+      poll.votesPerVoter,
+    );
+
+    return this.pollsRepository.addResults(pollId, results);
+  }
+
+  async cancelPoll(pollID: string): Promise<void> {
+    await this.pollsRepository.deletePoll(pollID);
   }
 }
