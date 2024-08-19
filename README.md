@@ -1,10 +1,20 @@
 # Voting app
 
+This is a small real-time voting app that allows user to connect to a room, submit their nomination and their vote.
+
 ## Tech stack
 
 - BE: NestJs + socket.io
 - FE: Vite + ReactJs + Tailwind + Socket.io
 - Database: Redis, just for experiment. You can use Postgrest or MySQL instead
+
+## How to run the project locally
+
+- Duplicate the `.env.example` file in the project root and rename the duplicate to `.env`.
+- Update the app ports in the `.env` file if needed to avoid port conflicts on your local machine.
+- Run `pnpm install` in the root folder
+- Open docker desktop or start your docker service. We need docker to run Redis
+- Run `pnpm dev` to start project
 
 ## Features
 
@@ -15,7 +25,7 @@
 - Only the host can start and end the poll.
 - After the poll ends, a screen displays the results.
 
-## Flows
+## Architecture
 
 ### Poll module
 
@@ -33,3 +43,8 @@
 - Websocket authentication: we want to ensure that only the user with JWT token can connect. In this case, we use an adapter to:
   - Handle the authentication using socket io middleware
   - Handle CORS. Of course, we can set CORS directly in the gateway but we aren't able to get the CLIENT_HOST from .env file. By using adapter, we can extract the environment variable from ConfigService
+
+## What I learnt
+
+- How to use RedisJSON
+- How to apply Websocket in NestJs
