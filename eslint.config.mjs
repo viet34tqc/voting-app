@@ -10,6 +10,7 @@ export default [
   pluginReactConfig,
   {
     rules: {
+      'react/prop-types': 'off',
       'react/react-in-jsx-scope': 'off', // No longer need to import React from 'react'
       '@typescript-eslint/no-unused-vars': 'warn',
       '@typescript-eslint/no-explicit-any': 'off', // Temporarily disabled variable that has any type
