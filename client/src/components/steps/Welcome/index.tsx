@@ -12,7 +12,9 @@ const Welcome = () => {
       </p>
       <div className='flex flex-col gap-2 min-[400px]:flex-row justify-center'>
         <Button onClick={() => setCurrentStep('createPoll')}>Create New Poll</Button>
-        <Button onClick={() => setCurrentStep('joinPoll')}>Join Existing Poll</Button>
+        <Button variant={'secondary'} onClick={() => setCurrentStep('joinPoll')}>
+          Join Existing Poll
+        </Button>
       </div>
     </section>
   )
