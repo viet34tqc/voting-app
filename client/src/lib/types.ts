@@ -1,1 +1,1 @@
-export type AppStep = 'welcome' | 'createPoll' | 'joinPoll'
+export type AppStep = 'welcome' | 'createPoll' | 'joinPoll' | 'waitingRoom'

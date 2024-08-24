@@ -13,7 +13,10 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { CreatePollFields, createPollSchema } from './formSchema'
 import { useCreatePoll } from './mutations/useCreatePoll'
+import { useAppStepsStore } from '@/stores/app-steps-store'
 export default function CreatePoll() {
+  const setCurrentStep = useAppStepsStore.use.setCurrentStep()
+
   const form = useForm<CreatePollFields>({
     resolver: zodResolver(createPollSchema),
     defaultValues: {
@@ -31,6 +34,7 @@ export default function CreatePoll() {
         toast({
           title: 'Created poll successfully',
         })
+        setCurrentStep('waitingRoom')
       },
       onError: (error) => {
         toast({
