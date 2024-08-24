@@ -12,5 +12,5 @@ export class CreatePollDto {
 
   @IsString()
   @Length(1, 100)
-  name: string;
+  userName: string;
 }

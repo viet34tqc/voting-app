@@ -1,9 +1,9 @@
 import { lazy, LazyExoticComponent } from 'react'
 import { AppStep } from './types'
 
-const Welcome = lazy(() => import('@/components/steps/welcome'))
-const CreatePoll = lazy(() => import('@/components/steps/create-poll'))
-const JoinPoll = lazy(() => import('@/components/steps/join-poll'))
+const Welcome = lazy(() => import('@/steps/welcome'))
+const CreatePoll = lazy(() => import('@/steps/create-poll'))
+const JoinPoll = lazy(() => import('@/steps/join-poll'))
 
 export const stepsConfig: Record<AppStep, LazyExoticComponent<() => JSX.Element>> = {
   welcome: Welcome,

@@ -8,21 +8,37 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { toast } from '@/components/ui/toast/use-toast'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { CreatePollFields, createPollSchema } from './formSchema'
+import { useCreatePoll } from './mutations/useCreatePoll'
 export default function CreatePoll() {
   const form = useForm<CreatePollFields>({
     resolver: zodResolver(createPollSchema),
     defaultValues: {
-      pollTopic: '',
+      topic: '',
       votesPerVoter: 1,
       userName: '',
     },
   })
 
+  const { mutate: createPoll, isPending } = useCreatePoll()
+
   function onSubmit(values: CreatePollFields) {
-    console.log(values)
+    createPoll(values, {
+      onSuccess: () => {
+        toast({
+          title: 'Created poll successfully',
+        })
+      },
+      onError: (error) => {
+        toast({
+          title: 'Failed to create poll',
+          description: error.message,
+        })
+      },
+    })
   }
 
   return (
@@ -34,7 +50,7 @@ export default function CreatePoll() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-3'>
           <FormField
-            name='pollTopic'
+            name='topic'
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Poll Topic</FormLabel>
@@ -74,7 +90,7 @@ export default function CreatePoll() {
             <Button type='button' variant='outline' onClick={() => form.reset()}>
               Reset
             </Button>
-            <Button>Create</Button>
+            <Button disabled={isPending}>Create</Button>
           </div>
         </form>
       </Form>

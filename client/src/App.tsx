@@ -1,11 +1,17 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import Layout from './components/layout'
-import Steps from './components/steps'
+import { Toaster } from './components/ui/toast/toaster'
+import Steps from './steps'
+const queryClient = new QueryClient()
 
 function App() {
   return (
-    <Layout>
-      <Steps />
-    </Layout>
+    <QueryClientProvider client={queryClient}>
+      <Layout>
+        <Steps />
+      </Layout>
+      <Toaster />
+    </QueryClientProvider>
   )
 }
 

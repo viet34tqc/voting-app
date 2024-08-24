@@ -40,7 +40,7 @@ export class PollsService {
     const accessToken = this.jwtService.sign(
       {
         pollId: createdPoll.id,
-        name: createPollDto.name,
+        name: createPollDto.userName,
       },
       {
         // This is optional but it's recommended to use it to adapt to JWT standards
