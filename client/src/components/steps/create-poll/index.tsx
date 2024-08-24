@@ -32,7 +32,7 @@ export default function CreatePoll() {
         <p className='text-muted-foreground'>Fill out the form below to create a new poll.</p>
       </div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-2'>
+        <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-3'>
           <FormField
             name='pollTopic'
             render={({ field }) => (
@@ -58,7 +58,7 @@ export default function CreatePoll() {
             )}
           />
           <FormField
-            name=''
+            name='userName'
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Your Name</FormLabel>
