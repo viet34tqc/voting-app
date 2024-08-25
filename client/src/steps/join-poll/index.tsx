@@ -8,10 +8,15 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { toast } from '@/components/ui/toast/use-toast'
+import { useAppStepsStore } from '@/stores/app-steps-store'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { JoinPollFields, joinPollSchema } from './formSchema'
+import { JoinPollFields, joinPollSchema } from './form-schema'
+import { useJoinPoll } from './mutations/use-join-poll'
 export default function CreatePoll() {
+  const setCurrentStep = useAppStepsStore.use.setCurrentStep()
+  const { mutate: joinPoll, isPending } = useJoinPoll()
   const form = useForm<JoinPollFields>({
     resolver: zodResolver(joinPollSchema),
     defaultValues: {
@@ -21,7 +26,19 @@ export default function CreatePoll() {
   })
 
   function onSubmit(values: JoinPollFields) {
-    console.log(values)
+    joinPoll(values, {
+      onSuccess: () => {
+        toast({
+          title: 'Joined poll successfully',
+        })
+      },
+      onError: (error) => {
+        toast({
+          title: 'Failed to join poll',
+          description: error.message,
+        })
+      },
+    })
   }
 
   return (
@@ -63,7 +80,7 @@ export default function CreatePoll() {
             <Button type='button' variant='outline' onClick={() => form.reset()}>
               Reset
             </Button>
-            <Button>Join</Button>
+            <Button disabled={isPending}>Join</Button>
           </div>
         </form>
       </Form>

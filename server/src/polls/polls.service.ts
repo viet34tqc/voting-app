@@ -63,7 +63,7 @@ export class PollsService {
     const accessToken = this.jwtService.sign(
       {
         pollId: joinedPoll.id,
-        name: joinPollDto.name,
+        name: joinPollDto.userName,
       },
       {
         subject: userId,

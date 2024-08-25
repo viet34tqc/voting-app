@@ -7,5 +7,5 @@ export class JoinPollDto {
 
   @IsString()
   @Length(1, 25)
-  name: string;
+  userName: string;
 }

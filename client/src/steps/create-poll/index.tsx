@@ -9,11 +9,11 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/toast/use-toast'
+import { useAppStepsStore } from '@/stores/app-steps-store'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { CreatePollFields, createPollSchema } from './formSchema'
-import { useCreatePoll } from './mutations/useCreatePoll'
-import { useAppStepsStore } from '@/stores/app-steps-store'
+import { CreatePollFields, createPollSchema } from './form-schema'
+import { useCreatePoll } from './mutations/use-create-poll'
 export default function CreatePoll() {
   const setCurrentStep = useAppStepsStore.use.setCurrentStep()
 
