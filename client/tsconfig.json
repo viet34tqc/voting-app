@@ -9,6 +9,7 @@
     }
   ],
   "compilerOptions": {
+    "preserveSymlinks": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]

@@ -1,8 +1,8 @@
 import { Button } from '@/components/ui/button/button'
-import { useAppStepsStore } from '@/stores/app-steps-store'
+import { useAppStore } from '@/stores/app-store'
 
 const Welcome = () => {
-  const setCurrentStep = useAppStepsStore.use.setCurrentStep()
+  const setCurrentStep = useAppStore.use.setCurrentStep()
   return (
     <section className='flex flex-col items-center gap-6 justify-center'>
       <h1 className='text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none'>PollPro</h1>
