@@ -32,4 +32,5 @@ export const useAppStoreBase = create<AppStore>((set, get) => ({
 }))
 
 // I need to type anotation here because of the issue 'The inferred type of "X" cannot be named' in Socket io
-export const useAppStore: WithSelectors<typeof useAppStoreBase> = createSelectors(useAppStoreBase)
+export const useAppStore: WithSelectors<typeof useAppStoreBase>['use'] =
+  createSelectors(useAppStoreBase).use

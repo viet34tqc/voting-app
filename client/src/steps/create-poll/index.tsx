@@ -16,8 +16,8 @@ import { CreatePollFields, createPollSchema } from './form-schema'
 import { useCreatePoll } from './mutations/use-create-poll'
 
 export default function CreatePoll() {
-  const setCurrentStep = useAppStore.use.setCurrentStep()
-  const setAcessToken = useAppStore.use.setAccessToken()
+  const setCurrentStep = useAppStore.setCurrentStep()
+  const setAcessToken = useAppStore.setAccessToken()
 
   const form = useForm<CreatePollFields>({
     resolver: zodResolver(createPollSchema),

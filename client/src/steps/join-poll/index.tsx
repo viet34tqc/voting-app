@@ -15,8 +15,8 @@ import { useForm } from 'react-hook-form'
 import { JoinPollFields, joinPollSchema } from './form-schema'
 import { useJoinPoll } from './mutations/use-join-poll'
 export default function CreatePoll() {
-  const setCurrentStep = useAppStore.use.setCurrentStep()
-  const setAcessToken = useAppStore.use.setAccessToken()
+  const setCurrentStep = useAppStore.setCurrentStep()
+  const setAcessToken = useAppStore.setAccessToken()
   const { mutate: joinPoll, isPending } = useJoinPoll()
   const form = useForm<JoinPollFields>({
     resolver: zodResolver(joinPollSchema),

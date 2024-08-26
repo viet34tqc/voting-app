@@ -3,7 +3,7 @@ import { useAppStore } from '@/stores/app-store'
 import { Suspense } from 'react'
 
 const Steps = () => {
-  const currentStep = useAppStore.use.currentStep()
+  const currentStep = useAppStore.currentStep()
 
   const CurrentStepComponent = stepsConfig[currentStep]
 
