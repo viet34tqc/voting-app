@@ -1,15 +1,19 @@
+import { initSocket } from '@/lib/initSocket'
 import { AppStep } from '@/lib/types'
 import type { Socket } from 'socket.io-client'
+import { Poll } from 'voting-app-shared'
 import { create } from 'zustand'
-import { createSelectors, initSocket, WithSelectors } from './utils'
+import { createSelectors, WithSelectors } from './utils'
 
-type AppStore = {
+export type AppStore = {
   currentStep: AppStep
   setCurrentStep: (step: AppStep) => void
-  initializeSocket: () => void
+  initSocket: () => void
   accessToken: string
   setAccessToken: (token: string) => void
   socket?: Socket
+  poll?: Poll
+  updatePoll: (poll: Poll) => void
 }
 
 export const useAppStoreBase = create<AppStore>((set, get) => ({
@@ -21,10 +25,13 @@ export const useAppStoreBase = create<AppStore>((set, get) => ({
   setAccessToken: (token: string) => {
     set((state) => ({ ...state, accessToken: token }))
   },
-  initializeSocket: () => {
+  updatePoll: (poll: Poll) => {
+    set((state) => ({ ...state, poll }))
+  },
+  initSocket: () => {
     const socket = get().socket
     if (!socket) {
-      set((state) => ({ ...state, socket: initSocket() }))
+      set((state) => ({ ...state, socket: initSocket(state) }))
     } else {
       socket.connect()
     }

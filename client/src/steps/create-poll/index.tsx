@@ -18,6 +18,7 @@ import { useCreatePoll } from './mutations/use-create-poll'
 export default function CreatePoll() {
   const setCurrentStep = useAppStore.setCurrentStep()
   const setAcessToken = useAppStore.setAccessToken()
+  const updatePoll = useAppStore.updatePoll()
 
   const form = useForm<CreatePollFields>({
     resolver: zodResolver(createPollSchema),
@@ -38,6 +39,7 @@ export default function CreatePoll() {
         })
         setCurrentStep('waitingRoom')
         setAcessToken(data.accessToken)
+        updatePoll(data.poll)
       },
       onError: (error) => {
         toast({

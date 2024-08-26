@@ -1,7 +1,11 @@
+import { useAppStore } from '@/stores/app-store'
 import { useEffect } from 'react'
 
 const WaitingRoom = () => {
-  useEffect(() => {}, [])
+  const initSocket = useAppStore.initSocket()
+  useEffect(() => {
+    initSocket()
+  }, [])
   return <div>WaitingRoom</div>
 }
 

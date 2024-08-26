@@ -1,4 +1,3 @@
-import { io, Socket } from 'socket.io-client'
 import { StoreApi, UseBoundStore } from 'zustand'
 export type WithSelectors<S> = S extends { getState: () => infer T }
   ? S & { use: { [K in keyof T]: () => T[K] } }
@@ -13,19 +12,4 @@ export const createSelectors = <S extends UseBoundStore<StoreApi<object>>>(_stor
   }
 
   return store
-}
-
-export const initSocket: () => Socket = () => {
-  const socket = io(import.meta.env.VITE_API_SOCKET_URL, {
-    auth: {
-      token: 'abc',
-    },
-    transports: ['websocket', 'polling'],
-  })
-
-  socket.on('connect', () => {
-    console.log('socket connected')
-  })
-
-  return socket
 }
