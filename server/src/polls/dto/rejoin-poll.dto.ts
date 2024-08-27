@@ -11,5 +11,5 @@ export class RejoinPollDto {
 
   @IsString()
   @Length(1, 25)
-  name: string;
+  userName: string;
 }

@@ -61,7 +61,7 @@ const createTokenMiddleware =
       const payload = jwtService.verify(token);
       socket.userId = payload.sub;
       socket.pollId = payload.pollId;
-      socket.name = payload.name;
+      socket.userName = payload.userName;
       // If everything's ok, go next();
       next();
     } catch (error) {

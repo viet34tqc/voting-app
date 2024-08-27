@@ -51,7 +51,7 @@ export class PollsGateway
     this.logger.log(`Client connected: ${client.id}`);
     this.logger.debug(`Number of connected sockets: ${sockets.size}`);
     this.logger.debug(
-      `Socket connected with userId: ${client.userId}, pollId: ${client.pollId}, and name: "${client.name}"`,
+      `Socket connected with userId: ${client.userId}, pollId: ${client.pollId}, and name: "${client.userName}"`,
     );
 
     const roomName = client.pollId;
@@ -69,7 +69,7 @@ export class PollsGateway
     const updatedPoll = await this.pollsService.addParticipant({
       pollId: client.pollId,
       userId: client.userId,
-      name: client.name,
+      userName: client.userName,
     });
 
     // Whenever a user joins the room, we update poll

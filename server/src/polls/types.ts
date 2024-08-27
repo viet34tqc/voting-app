@@ -14,7 +14,7 @@ export type CreatePollData = {
 export type AddParticipantData = {
   pollId: string;
   userId: string;
-  name: string;
+  userName: string;
 };
 
 export type AddNominationData = {

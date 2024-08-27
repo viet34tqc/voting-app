@@ -96,10 +96,10 @@ export class PollsRepository {
   async addParticipant({
     pollId,
     userId,
-    name,
+    userName,
   }: AddParticipantData): Promise<Poll> {
     this.logger.log(
-      `Attempting to add a participant with userId/name: ${userId}/${name} to pollId: ${pollId}`,
+      `Attempting to add a participant with userId/name: ${userId}/${userName} to pollId: ${pollId}`,
     );
 
     const key = `polls:${pollId}`;
@@ -110,7 +110,7 @@ export class PollsRepository {
         'JSON.SET',
         key,
         participantPath,
-        JSON.stringify(name),
+        JSON.stringify(userName),
       );
 
       const updatedPoll = await this.getPoll(pollId);
@@ -122,11 +122,11 @@ export class PollsRepository {
       return updatedPoll;
     } catch (e) {
       this.logger.error(
-        `Failed to add a participant with userId/name: ${userId}/${name} to pollId: ${pollId}`,
+        `Failed to add a participant with userId/userName: ${userId}/${userName} to pollId: ${pollId}`,
         e,
       );
       throw new InternalServerErrorException(
-        `Failed to add a participant with userId/name: ${userId}/${name} to pollId: ${pollId}`,
+        `Failed to add a participant with userId/userName: ${userId}/${userName} to pollId: ${pollId}`,
       );
     }
   }

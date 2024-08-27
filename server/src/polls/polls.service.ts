@@ -40,7 +40,7 @@ export class PollsService {
     const accessToken = this.jwtService.sign(
       {
         pollId: createdPoll.id,
-        name: createPollDto.userName,
+        userName: createPollDto.userName,
       },
       {
         // This is optional but it's recommended to use it to adapt to JWT standards
@@ -63,7 +63,7 @@ export class PollsService {
     const accessToken = this.jwtService.sign(
       {
         pollId: joinedPoll.id,
-        name: joinPollDto.userName,
+        userName: joinPollDto.userName,
       },
       {
         subject: userId,
@@ -77,7 +77,7 @@ export class PollsService {
 
   async rejoin(rejoinDto: RejoinPollDto) {
     this.logger.debug(
-      `Rejoining poll with ID: ${rejoinDto.pollId} for user with Id: ${rejoinDto.userId} with name: ${rejoinDto.name}`,
+      `Rejoining poll with ID: ${rejoinDto.pollId} for user with Id: ${rejoinDto.userId} with name: ${rejoinDto.userName}`,
     );
 
     const joinedPoll = await this.pollsRepository.addParticipant(rejoinDto);
