@@ -1,3 +1,4 @@
+import { toast } from '@/components/ui/toast/use-toast'
 import { AppStore } from '@/stores/app-store'
 import { Socket, io } from 'socket.io-client'
 import { Poll } from 'voting-app-shared'
@@ -15,6 +16,18 @@ export const initSocket: (state: AppStore) => Socket | null = (state: AppStore) 
 
   socket.on('connect', () => {
     console.log('socket connected')
+  })
+  socket.on('connect_error', () => {
+    toast({
+      title: 'Connection Error',
+      description: 'Failed to connect to server',
+    })
+  })
+  socket.on('exception', (error) => {
+    toast({
+      title: 'Connection Error',
+      description: error.message,
+    })
   })
 
   // When there is a new participant, server updated the poll and send 'poll_updated' event to all clients

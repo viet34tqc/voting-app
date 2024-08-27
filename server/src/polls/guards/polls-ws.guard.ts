@@ -20,7 +20,6 @@ export class PollsWsGuard implements CanActivate {
   async canActivate(context: ExecutionContext) {
     const request = context.switchToWs().getClient();
 
-    console.log('pollsService', this.pollsService);
     // fallback to token header for postman testing
     const token =
       request.handshake.auth.token || request.handshake.headers['token'];
