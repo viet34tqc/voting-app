@@ -4,7 +4,6 @@ import { Suspense } from 'react'
 
 const Steps = () => {
   const currentStep = useAppStore.currentStep()
-
   const CurrentStepComponent = stepsConfig[currentStep]
 
   return (

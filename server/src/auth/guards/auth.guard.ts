@@ -6,10 +6,14 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
+import { PollsService } from 'src/polls/polls.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private readonly jwtService: JwtService) {}
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly pollsService: PollsService,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
@@ -25,6 +29,13 @@ export class AuthGuard implements CanActivate {
     } catch {
       throw new ForbiddenException('Invalid access token');
     }
+
+    const poll = await this.pollsService.getPoll(request.pollId);
+
+    if (!poll) {
+      throw new ForbiddenException('There is no poll');
+    }
+
     return true;
   }
 

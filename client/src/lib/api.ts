@@ -14,11 +14,11 @@ const api = axios.create({
 api.interceptors.response.use(
   (response: AxiosResponse) => response.data,
   (error) => {
-    // Error from backend: {message: ['Error message 1', 'Error message 2'], statusCode: 400}
-    const message =
-      error instanceof AxiosError ? error.response?.data?.message?.join(', ') : error?.message
+    // Error from data validation is: {message: ['Error message 1', 'Error message 2'], statusCode: 400} or just {message: 'Error message', statusCode: 400}
+    const message = error instanceof AxiosError ? error.response?.data?.message : error?.message
+    const normalizedMessage = Array.isArray(message) ? message.join(', ') : message
     const errorResponse = {
-      message: message ?? 'Unknown error',
+      message: normalizedMessage ?? 'Unknown error',
       statusCode: error.response?.status,
     }
 

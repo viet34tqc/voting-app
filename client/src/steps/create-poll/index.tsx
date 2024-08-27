@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/toast/use-toast'
+import { accessTokenConfig } from '@/lib/utils'
 import { useAppStore } from '@/stores/app-store'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
@@ -17,7 +18,6 @@ import { useCreatePoll } from './mutations/use-create-poll'
 
 export default function CreatePoll() {
   const setCurrentStep = useAppStore.setCurrentStep()
-  const setAcessToken = useAppStore.setAccessToken()
   const updatePoll = useAppStore.updatePoll()
 
   const form = useForm<CreatePollFields>({
@@ -37,9 +37,9 @@ export default function CreatePoll() {
         toast({
           title: 'Created poll successfully',
         })
-        setCurrentStep('waitingRoom')
-        setAcessToken(data.accessToken)
         updatePoll(data.poll)
+        accessTokenConfig.set(data.accessToken)
+        setCurrentStep('waitingRoom')
       },
       onError: (error) => {
         toast({

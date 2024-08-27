@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/toast/use-toast'
+import { accessTokenConfig } from '@/lib/utils'
 import { useAppStore } from '@/stores/app-store'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
@@ -16,7 +17,7 @@ import { JoinPollFields, joinPollSchema } from './form-schema'
 import { useJoinPoll } from './mutations/use-join-poll'
 export default function CreatePoll() {
   const setCurrentStep = useAppStore.setCurrentStep()
-  const setAcessToken = useAppStore.setAccessToken()
+  const updatePoll = useAppStore.updatePoll()
   const { mutate: joinPoll, isPending } = useJoinPoll()
   const form = useForm<JoinPollFields>({
     resolver: zodResolver(joinPollSchema),
@@ -32,8 +33,9 @@ export default function CreatePoll() {
         toast({
           title: 'Joined poll successfully',
         })
+        accessTokenConfig.set(data.accessToken)
+        updatePoll(data.poll)
         setCurrentStep('waitingRoom')
-        setAcessToken(data.accessToken)
       },
       onError: (error) => {
         toast({

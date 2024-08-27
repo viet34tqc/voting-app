@@ -9,21 +9,18 @@ export type AppStore = {
   currentStep: AppStep
   setCurrentStep: (step: AppStep) => void
   initSocket: () => void
-  accessToken: string
-  setAccessToken: (token: string) => void
-  socket?: Socket
-  poll?: Poll
+  socket: Socket | null
+  poll: Poll | null
   updatePoll: (poll: Poll) => void
 }
 
 export const useAppStoreBase = create<AppStore>((set, get) => ({
   currentStep: 'welcome',
   accessToken: '',
+  socket: null,
+  poll: null,
   setCurrentStep: (step: AppStep) => {
     set((state) => ({ ...state, currentStep: step }))
-  },
-  setAccessToken: (token: string) => {
-    set((state) => ({ ...state, accessToken: token }))
   },
   updatePoll: (poll: Poll) => {
     set((state) => ({ ...state, poll }))

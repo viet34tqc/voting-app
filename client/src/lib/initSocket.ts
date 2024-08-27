@@ -1,11 +1,14 @@
 import { AppStore } from '@/stores/app-store'
 import { Socket, io } from 'socket.io-client'
 import { Poll } from 'voting-app-shared'
+import { accessTokenConfig } from './utils'
 
-export const initSocket: (state: AppStore) => Socket = (state: AppStore) => {
+export const initSocket: (state: AppStore) => Socket | null = (state: AppStore) => {
+  const accessToken = accessTokenConfig.get()
+  if (!accessToken) return null
   const socket = io(import.meta.env.VITE_API_SOCKET_URL, {
     auth: {
-      token: state.accessToken,
+      token: accessToken,
     },
     transports: ['websocket', 'polling'],
   })

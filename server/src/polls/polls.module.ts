@@ -8,6 +8,7 @@ import { PollsService } from './polls.service';
 
 @Module({
   imports: [ConfigModule, RedisDynamicModule, JwtDynamicModule],
+  exports: [PollsService],
   controllers: [PollsController],
   providers: [PollsService, PollsRepository, PollsGateway],
 })
