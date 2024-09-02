@@ -1,9 +1,9 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { useEffect } from 'react'
 import Layout from './components/layout'
 import Reconnect from './components/reconnect'
 import { Toaster } from './components/ui/toast/toaster'
 import Steps from './steps'
-import { useEffect } from 'react'
 import { useAppStore } from './stores/app-store'
 const queryClient = new QueryClient({
   defaultOptions: {

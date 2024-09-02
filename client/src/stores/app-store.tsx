@@ -11,6 +11,8 @@ export type AppStore = {
   initSocket: () => void
   socket: Socket | null
   poll: Poll | null
+  isAdmin: boolean
+  setIsAdmin: (isAdmin: boolean) => void
   updatePoll: (poll: Poll) => void
 }
 
@@ -19,11 +21,15 @@ export const useAppStoreBase = create<AppStore>((set, get) => ({
   accessToken: '',
   socket: null,
   poll: null,
+  isAdmin: false,
   setCurrentStep: (step: AppStep) => {
     set((state) => ({ ...state, currentStep: step }))
   },
   updatePoll: (poll: Poll) => {
     set((state) => ({ ...state, poll }))
+  },
+  setIsAdmin: (isAdmin: boolean) => {
+    set((state) => ({ ...state, isAdmin }))
   },
   initSocket: () => {
     const socket = get().socket

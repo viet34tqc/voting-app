@@ -1,4 +1,4 @@
-import { useGetMe } from '@/queries/useGetMe'
+import { useGetMe } from '@/queries/use-get-me'
 import { useAppStore } from '@/stores/app-store'
 import { useEffect } from 'react'
 
