@@ -3,7 +3,6 @@ import { useAppStore } from '@/stores/app-store'
 import { useEffect } from 'react'
 
 const Reconnect = () => {
-  const initSocket = useAppStore.initSocket()
   const { data: user, error } = useGetMe()
   const currentPoll = useAppStore.poll()
   const setCurrentStep = useAppStore.setCurrentStep()
@@ -16,7 +15,6 @@ const Reconnect = () => {
     }
     // If no error, but also no user, that means there is no access token
     if (!user) return
-    initSocket()
     if (!currentPoll?.hasStarted) {
       setCurrentStep('waitingRoom')
     }

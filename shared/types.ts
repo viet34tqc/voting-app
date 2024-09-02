@@ -17,6 +17,12 @@ export type Votes = {
   [userId: string]: NominationId[]
 }
 
+export type User = {
+  userId: string
+  adminId: string
+  pollId: string
+}
+
 export type Results = Array<{
   nominationId: NominationId
   nominationText: string

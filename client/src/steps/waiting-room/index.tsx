@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
+import { useGetMe } from '@/queries/useGetMe'
 import { useAppStore } from '@/stores/app-store'
 import { Copy, PenSquare, Users } from 'lucide-react'
-import { useEffect } from 'react'
 
 const copyPollId = (text: string) => {
   navigator.clipboard
@@ -12,12 +12,15 @@ const copyPollId = (text: string) => {
 
 const WaitingRoom = () => {
   const currentPoll = useAppStore.poll()
-  const initSocket = useAppStore.initSocket()
-  useEffect(() => {
-    initSocket()
-  }, [])
+  const { data: user, error, isPending } = useGetMe()
+
+  if (isPending) return <>Loading</>
+
+  if (error) return 'User not found'
 
   if (!currentPoll) return 'There is no poll. There might be an error'
+
+  const isAdmin = user?.userId === currentPoll.adminId
 
   return (
     <div className='shadow-lg rounded-lg overflow-auto'>
@@ -51,16 +54,30 @@ const WaitingRoom = () => {
           </div>
         </div>
 
-        <p className='text-center text-sm text-gray-600'>3 Nominations Required to Start!</p>
-
-        <div className='space-y-3'>
-          <Button className='w-full' variant='outline'>
-            Start Voting
-          </Button>
-          <Button className='w-full' variant='secondary'>
-            Leave Poll
-          </Button>
-        </div>
+        {isAdmin ? (
+          <>
+            <p className='italic'>{currentPoll.votesPerVoter} Nominations Required to Start!</p>
+            <div className='space-y-3'>
+              <Button className='w-full' variant='outline'>
+                Start Voting
+              </Button>
+              <Button className='w-full' variant='secondary'>
+                Leave Poll
+              </Button>
+            </div>
+          </>
+        ) : (
+          <>
+            <p className='italic'>
+              Waiting for Admin,{' '}
+              <span className='font-semibold'>{currentPoll.participants[currentPoll.adminId]}</span>
+              , to start the voting.
+            </p>
+            <Button className='w-full' variant='secondary'>
+              Leave Poll
+            </Button>
+          </>
+        )}
       </div>
     </div>
   )
