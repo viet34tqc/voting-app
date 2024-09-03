@@ -15,7 +15,7 @@ const Reconnect = () => {
     }
     // If no error, but also no user, that means there is no access token
     if (!user) return
-    if (!currentPoll?.hasStarted) {
+    if (currentPoll && !currentPoll?.hasStarted) {
       setCurrentStep('waitingRoom')
     }
   }, [user, currentPoll, error])

@@ -1,5 +1,6 @@
 import { initSocket } from '@/lib/initSocket'
 import { AppStep } from '@/lib/types'
+import { accessTokenConfig } from '@/lib/utils'
 import type { Socket } from 'socket.io-client'
 import { Poll } from 'voting-app-shared'
 import { create } from 'zustand'
@@ -14,14 +15,19 @@ export type AppStore = {
   isAdmin: boolean
   setIsAdmin: (isAdmin: boolean) => void
   updatePoll: (poll: Poll) => void
+  reset: () => void
 }
 
-export const useAppStoreBase = create<AppStore>((set, get) => ({
-  currentStep: 'welcome',
+const initialState = {
+  currentStep: 'welcome' as const,
   accessToken: '',
   socket: null,
   poll: null,
   isAdmin: false,
+}
+
+export const useAppStoreBase = create<AppStore>((set, get) => ({
+  ...initialState,
   setCurrentStep: (step: AppStep) => {
     set((state) => ({ ...state, currentStep: step }))
   },
@@ -38,6 +44,11 @@ export const useAppStoreBase = create<AppStore>((set, get) => ({
     } else {
       socket.connect()
     }
+  },
+  reset: () => {
+    get().socket?.disconnect()
+    accessTokenConfig.remove()
+    set(initialState)
   },
 }))
 

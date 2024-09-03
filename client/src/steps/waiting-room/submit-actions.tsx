@@ -4,6 +4,7 @@ import { useAppStore } from '@/stores/app-store'
 export const SubmitActions = () => {
   const isAdmin = useAppStore.isAdmin()
   const currentPoll = useAppStore.poll()
+  const reset = useAppStore.reset()
 
   if (!currentPoll) return 'There is no poll. There might be an error'
 
@@ -21,7 +22,7 @@ export const SubmitActions = () => {
         >
           Start Voting
         </Button>
-        <Button className='w-full' variant='secondary'>
+        <Button className='w-full' variant='secondary' onClick={reset}>
           Leave Poll
         </Button>
       </div>
@@ -38,7 +39,7 @@ export const SubmitActions = () => {
       ) : (
         <p className='italic'>Admin is disconnect, please wait him to return</p>
       )}
-      <Button className='w-full' variant='secondary'>
+      <Button className='w-full' variant='secondary' onClick={reset}>
         Leave Poll
       </Button>
     </>
