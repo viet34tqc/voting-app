@@ -3,6 +3,7 @@ import { useIsAdmin } from '@/hooks/use-is-admin'
 import { useAppStore } from '@/stores/app-store'
 import { Copy, PenSquare, Users } from 'lucide-react'
 import { useEffect } from 'react'
+import { SubmitActions } from './submit-actions'
 
 const copyPollId = (text: string) => {
   navigator.clipboard
@@ -13,7 +14,6 @@ const copyPollId = (text: string) => {
 
 const WaitingRoom = () => {
   const currentPoll = useAppStore.poll()
-  const isAdmin = useAppStore.isAdmin()
 
   const initSocket = useAppStore.initSocket()
   useEffect(() => {
@@ -24,6 +24,8 @@ const WaitingRoom = () => {
 
   if (!currentPoll) return 'There is no poll. There might be an error'
 
+  const participants = currentPoll.participants
+  const pollId = currentPoll.id
   return (
     <div className='shadow-lg rounded-lg overflow-auto'>
       <div className='p-6 space-y-6'>
@@ -37,9 +39,9 @@ const WaitingRoom = () => {
           <Button
             variant='ghost'
             className='flex items-center w-full justify-between bg-gray-100 p-2 rounded'
-            onClick={() => copyPollId(currentPoll.id)}
+            onClick={() => copyPollId(pollId)}
           >
-            <span className='text-gray-800 font-mono'>{currentPoll.id}</span>
+            <span className='text-gray-800 font-mono'>{pollId}</span>
             <Copy className='h-4 w-4' />
             <span className='sr-only'>Copy Poll ID</span>
           </Button>
@@ -48,7 +50,7 @@ const WaitingRoom = () => {
         <div className='flex justify-center space-x-4'>
           <div className='bg-red-100 text-red-600 p-3 rounded-lg text-center'>
             <Users className='h-6 w-6 mx-auto' />
-            <span className='block mt-1 font-semibold'>0</span>
+            <span className='block mt-1 font-semibold'>{Object.keys(participants).length}</span>
           </div>
           <div className='bg-blue-100 text-blue-600 p-3 rounded-lg text-center'>
             <PenSquare className='h-6 w-6 mx-auto' />
@@ -56,37 +58,7 @@ const WaitingRoom = () => {
           </div>
         </div>
 
-        {isAdmin ? (
-          <>
-            <p className='italic'>{currentPoll.votesPerVoter} Nominations Required to Start!</p>
-            <div className='space-y-3'>
-              <Button className='w-full' variant='outline'>
-                Start Voting
-              </Button>
-              <Button className='w-full' variant='secondary'>
-                Leave Poll
-              </Button>
-            </div>
-          </>
-        ) : (
-          <>
-            {/* User is connecting but admin is disconnect */}
-            {currentPoll.participants[currentPoll.adminId] ? (
-              <p className='italic'>
-                Waiting for Admin,{' '}
-                <span className='font-semibold'>
-                  {currentPoll.participants[currentPoll.adminId]}
-                </span>
-                , to start the voting.
-              </p>
-            ) : (
-              <p className='italic'>Admin is disconnect, please wait him to return</p>
-            )}
-            <Button className='w-full' variant='secondary'>
-              Leave Poll
-            </Button>
-          </>
-        )}
+        <SubmitActions />
       </div>
     </div>
   )
