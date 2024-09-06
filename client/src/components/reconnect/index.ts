@@ -9,6 +9,11 @@ const Reconnect = () => {
   const currentPoll = useAppStore.poll()
   const setCurrentStep = useAppStore.setCurrentStep()
 
+  const initSocket = useAppStore.initSocket()
+  useEffect(() => {
+    initSocket()
+  }, [])
+
   useEffect(() => {
     // There might be error when database is clear but user still has accessToken
     if (error) {
