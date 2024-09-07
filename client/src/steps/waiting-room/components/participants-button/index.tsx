@@ -2,9 +2,10 @@ import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { Users } from 'lucide-react'
 import { Participants } from 'voting-app-shared'
+import ParticipantList from '../participant-list'
 
-const ParticipantButton = ({ participants }: { participants: Participants }) => {
-  const participantsLenght = Object.keys(participants).length
+const ParticipantSheet = ({ participants }: { participants: Participants }) => {
+  const participantsLength = Object.keys(participants).length
   /*
    * Why I'm using Sheet instead of Dialog?
    * We can have a long list of participants, so sheets is a better choice.
@@ -18,17 +19,17 @@ const ParticipantButton = ({ participants }: { participants: Participants }) => 
           variant={'ghost'}
         >
           <Users className='h-6 w-6 mx-auto' />
-          <span className='block mt-1 font-semibold'>{participantsLenght}</span>
+          <span className='block mt-1 font-semibold'>{participantsLength}</span>
         </Button>
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
           <SheetTitle>Participants</SheetTitle>
-          {participantsLenght === 0 ? 'No participants yet' : ''}
         </SheetHeader>
+        <ParticipantList participants={participants} />
       </SheetContent>
     </Sheet>
   )
 }
 
-export default ParticipantButton
+export default ParticipantSheet

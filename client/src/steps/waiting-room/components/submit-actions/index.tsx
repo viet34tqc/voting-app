@@ -1,17 +1,18 @@
 import { Button } from '@/components/ui/button'
+import { useGetCurrentUser } from '@/hooks/use-get-current-user'
 import { useAppStore } from '@/stores/app-store'
-import { LeavePollButton } from './leave-button'
+import { LeavePollDialog } from './leave-poll-dialog'
 
 export const SubmitActions = () => {
-  const isAdmin = useAppStore.isAdmin()
+  const currentUser = useGetCurrentUser()
   const currentPoll = useAppStore.poll()
 
-  if (!currentPoll) return 'There is no poll. There might be an error'
+  if (!currentUser || !currentPoll) return null
 
   const participants = currentPoll.participants
   const nominations = currentPoll.nominations
 
-  return isAdmin ? (
+  return currentUser.isAdmin ? (
     <>
       <p className='italic'>{currentPoll.votesPerVoter} Nominations Required to Start!</p>
       <div className='space-y-3'>
@@ -39,7 +40,7 @@ export const SubmitActions = () => {
       ) : (
         <p className='italic'>Admin is disconnect, please wait him to return</p>
       )}
-      <LeavePollButton />
+      <LeavePollDialog />
     </>
   )
 }

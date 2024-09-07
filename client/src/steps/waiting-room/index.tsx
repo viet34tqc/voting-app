@@ -1,9 +1,9 @@
 import { Button } from '@/components/ui/button'
-import { useIsAdmin } from '@/hooks/use-is-admin'
+import { useGetCurrentUser } from '@/hooks/use-get-current-user'
 import { useAppStore } from '@/stores/app-store'
 import { Copy, PenSquare } from 'lucide-react'
 import { useEffect } from 'react'
-import ParticipantButton from './components/participants-button'
+import ParticipantSheet from './components/participants-button'
 import { SubmitActions } from './components/submit-actions'
 
 const copyPollId = (text: string) => {
@@ -21,7 +21,9 @@ const WaitingRoom = () => {
     initSocket()
   }, [])
 
-  useIsAdmin()
+  const currentUser = useGetCurrentUser()
+
+  if (!currentUser) return 'Failed to load user'
 
   if (!currentPoll) return 'There is no poll. There might be an error'
 
@@ -49,7 +51,7 @@ const WaitingRoom = () => {
         </div>
 
         <div className='flex justify-center space-x-4'>
-          <ParticipantButton participants={participants} />
+          <ParticipantSheet participants={participants} />
           <div className='bg-blue-100 text-blue-600 p-3 rounded-lg text-center'>
             <PenSquare className='h-6 w-6 mx-auto' />
             <span className='block mt-1 font-semibold'>0</span>
