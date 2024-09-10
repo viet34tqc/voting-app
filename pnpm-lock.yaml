@@ -11,9 +11,6 @@ importers:
       '@eslint/js':
         specifier: ^9.6.0
         version: 9.6.0
-      eslint:
-        specifier: ^8.57.0
-        version: 8.57.0
       eslint-plugin-react:
         specifier: ^7.34.3
         version: 7.34.3(eslint@8.57.0)

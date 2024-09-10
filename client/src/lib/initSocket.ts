@@ -6,7 +6,8 @@ import { accessTokenConfig } from './utils'
 
 export const initSocket: (state: AppStore) => Socket | null = (state: AppStore) => {
   const accessToken = accessTokenConfig.get()
-  if (!accessToken) return null
+  const currentUser = state.currentUser
+  if (!accessToken || !currentUser) return null
   const socket = io(import.meta.env.VITE_API_SOCKET_URL, {
     auth: {
       token: accessToken,

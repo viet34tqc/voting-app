@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button'
-import { useGetCurrentUser } from '@/hooks/use-get-current-user'
 import { useAppStore } from '@/stores/app-store'
 import { Copy, PenSquare } from 'lucide-react'
 import { useEffect } from 'react'
@@ -15,13 +14,14 @@ const copyPollId = (text: string) => {
 
 const WaitingRoom = () => {
   const currentPoll = useAppStore.poll()
+  const currentUser = useAppStore.currentUser()
 
   const initSocket = useAppStore.initSocket()
   useEffect(() => {
-    initSocket()
-  }, [initSocket])
-
-  const currentUser = useGetCurrentUser()
+    if (!currentUser) {
+      initSocket()
+    }
+  }, [initSocket, currentUser])
 
   if (!currentUser) return <div>Failed to load user</div>
 

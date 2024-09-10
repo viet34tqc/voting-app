@@ -36,6 +36,10 @@ export class AuthGuard implements CanActivate {
       throw new ForbiddenException('There is no poll');
     }
 
+    if (poll.adminId === request.userId) {
+      request.isAdmin = true;
+    }
+
     return true;
   }
 

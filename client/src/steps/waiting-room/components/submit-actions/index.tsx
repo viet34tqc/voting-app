@@ -1,10 +1,9 @@
 import { Button } from '@/components/ui/button'
-import { useGetCurrentUser } from '@/hooks/use-get-current-user'
 import { useAppStore } from '@/stores/app-store'
 import { LeavePollDialog } from './leave-poll-dialog'
 
 export const SubmitActions = () => {
-  const currentUser = useGetCurrentUser()
+  const currentUser = useAppStore.currentUser()
   const currentPoll = useAppStore.poll()
 
   if (!currentUser || !currentPoll) return null

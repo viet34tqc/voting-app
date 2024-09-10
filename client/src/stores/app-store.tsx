@@ -1,13 +1,16 @@
+import { getMe } from '@/apis/getMe'
 import { initSocket } from '@/lib/initSocket'
 import { AppStep } from '@/lib/types'
 import { accessTokenConfig } from '@/lib/utils'
 import type { Socket } from 'socket.io-client'
-import { Poll } from 'voting-app-shared'
+import { Poll, User } from 'voting-app-shared'
 import { create } from 'zustand'
 import { createSelectors, WithSelectors } from './utils'
 
 export type AppStore = {
   currentStep: AppStep
+  currentUser: User | null
+  setCurrentUser: () => void
   setCurrentStep: (step: AppStep) => void
   initSocket: () => void
   socket: Socket | null
@@ -18,6 +21,7 @@ export type AppStore = {
 
 const initialState = {
   currentStep: 'welcome' as const,
+  currentUser: null,
   accessToken: '',
   socket: null,
   poll: null,
@@ -25,13 +29,28 @@ const initialState = {
 
 export const useAppStoreBase = create<AppStore>((set, get) => ({
   ...initialState,
+  currentUser: null,
   setCurrentStep: (step: AppStep) => {
     set((state) => ({ ...state, currentStep: step }))
+  },
+  async setCurrentUser() {
+    try {
+      const user = await getMe()
+      if (user) {
+        set((state) => ({ ...state, currentUser: user }))
+      }
+    } catch (error) {
+      // token is expired, remove it
+      accessTokenConfig.remove()
+    }
   },
   updatePoll: (poll: Poll) => {
     set((state) => ({ ...state, poll }))
   },
-  initSocket: () => {
+  initSocket: async () => {
+    if (!get().currentUser) {
+      await get().setCurrentUser()
+    }
     const socket = get().socket
     if (!socket) {
       set((state) => ({ ...state, socket: initSocket(state) }))
@@ -45,6 +64,8 @@ export const useAppStoreBase = create<AppStore>((set, get) => ({
     set(initialState)
   },
 }))
+
+useAppStoreBase.getState().initSocket()
 
 // I need to type anotation here because of the issue 'The inferred type of "X" cannot be named' in Socket io
 export const useAppStore: WithSelectors<typeof useAppStoreBase>['use'] =

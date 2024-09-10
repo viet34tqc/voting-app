@@ -10,17 +10,22 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
-import { useGetCurrentUser } from '@/hooks/use-get-current-user'
 import { useAppStore } from '@/stores/app-store'
 import { UserMinus } from 'lucide-react'
 
 const RemoveParticipantDialog = ({ participantId }: { participantId: string }) => {
-  const currentUser = useGetCurrentUser()
+  const currentUser = useAppStore.currentUser()
   const currentPoll = useAppStore.poll()
+  const socket = useAppStore.socket()
   if (!currentUser || !currentUser.isAdmin) return null
 
   // Admin can't remove himself
   if (currentPoll?.adminId === participantId) return null
+
+  const removeParticipant = () => {
+    socket?.emit('remove_participant', { id: participantId })
+  }
+
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -37,7 +42,7 @@ const RemoveParticipantDialog = ({ participantId }: { participantId: string }) =
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction>Remove</AlertDialogAction>
+          <AlertDialogAction onClick={removeParticipant}>Remove</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

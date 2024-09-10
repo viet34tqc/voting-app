@@ -19,8 +19,9 @@ export type Votes = {
 
 export type User = {
   userId: string
-  adminId: string
+  userName: string
   pollId: string
+  isAdmin: boolean
 }
 
 export type Results = Array<{

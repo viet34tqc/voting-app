@@ -10,6 +10,7 @@ export class AuthController {
       userId: request.userId,
       pollId: request.pollId,
       userName: request.userName,
+      isAdmin: request.isAdmin,
     };
   }
 }
