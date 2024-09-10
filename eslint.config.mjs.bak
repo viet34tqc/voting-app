@@ -1,3 +1,6 @@
+// This file is only for reference in the future project to see how to setup eslint v9
+// I have decided to run eslint in the package itself
+
 import pluginJs from '@eslint/js'
 import pluginReactConfig from 'eslint-plugin-react/configs/recommended.js'
 import tseslint from 'typescript-eslint'

@@ -19,7 +19,7 @@ const WaitingRoom = () => {
   const initSocket = useAppStore.initSocket()
   useEffect(() => {
     initSocket()
-  }, [])
+  }, [initSocket])
 
   const currentUser = useGetCurrentUser()
 

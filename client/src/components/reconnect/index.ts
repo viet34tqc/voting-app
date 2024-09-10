@@ -12,7 +12,7 @@ const Reconnect = () => {
   const initSocket = useAppStore.initSocket()
   useEffect(() => {
     initSocket()
-  }, [])
+  }, [initSocket])
 
   useEffect(() => {
     // There might be error when database is clear but user still has accessToken
@@ -30,7 +30,7 @@ const Reconnect = () => {
     if (currentPoll && !currentPoll?.hasStarted) {
       setCurrentStep('waitingRoom')
     }
-  }, [user, currentPoll, error])
+  }, [currentPoll, error, queryClient, setCurrentStep, user])
 
   return null
 }
