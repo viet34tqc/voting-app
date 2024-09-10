@@ -23,9 +23,9 @@ const WaitingRoom = () => {
 
   const currentUser = useGetCurrentUser()
 
-  if (!currentUser) return 'Failed to load user'
+  if (!currentUser) return <div>Failed to load user</div>
 
-  if (!currentPoll) return 'There is no poll. There might be an error'
+  if (!currentPoll) return <div>There is no poll. There might be an error</div>
 
   const participants = currentPoll.participants
   const pollId = currentPoll.id
