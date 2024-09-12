@@ -16,6 +16,7 @@ export type AppStore = {
   socket: Socket | null
   poll: Poll | null
   updatePoll: (poll: Poll) => void
+  checkToRemoveUser: (updatedPoll: Poll) => void
   reset: () => void
 }
 
@@ -47,6 +48,18 @@ export const useAppStoreBase = create<AppStore>((set, get) => ({
   updatePoll: (poll: Poll) => {
     set((state) => ({ ...state, poll }))
   },
+  checkToRemoveUser: (updatedPoll: Poll) => {
+    const currentPoll = get().poll
+    const currentUser = get().currentUser
+
+    if (!currentPoll || !currentUser) return
+    if (
+      currentPoll.participants[currentUser.userId] &&
+      !updatedPoll.participants[currentUser.userId]
+    ) {
+      get().reset()
+    }
+  },
   initSocket: async () => {
     if (!get().currentUser) {
       await get().setCurrentUser()
@@ -61,6 +74,7 @@ export const useAppStoreBase = create<AppStore>((set, get) => ({
   reset: () => {
     get().socket?.disconnect()
     accessTokenConfig.remove()
+    console.log('initialState', initialState)
     set(initialState)
   },
 }))

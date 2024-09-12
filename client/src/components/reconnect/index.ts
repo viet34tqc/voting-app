@@ -3,13 +3,14 @@ import { useEffect } from 'react'
 
 const Reconnect = () => {
   const currentPoll = useAppStore.poll()
+  const currentUser = useAppStore.currentUser()
   const setCurrentStep = useAppStore.setCurrentStep()
 
   useEffect(() => {
-    if (currentPoll && !currentPoll?.hasStarted) {
+    if (currentPoll && currentUser && !currentPoll?.hasStarted) {
       setCurrentStep('waitingRoom')
     }
-  }, [currentPoll, setCurrentStep])
+  }, [currentPoll, currentUser, setCurrentStep])
 
   return null
 }
