@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { useAppStore } from '@/stores/app-store'
-import { LeavePollDialog } from './leave-poll-dialog'
+import CancelPollConfirmation from './cancel-poll'
+import { LeavePollConfirmation } from './leave-poll-confirmation'
 
 export const SubmitActions = () => {
   const currentUser = useAppStore.currentUser()
@@ -22,9 +23,7 @@ export const SubmitActions = () => {
         >
           Start Voting
         </Button>
-        <Button className='w-full' variant='secondary'>
-          Cancel Poll
-        </Button>
+        <CancelPollConfirmation />
       </div>
     </>
   ) : (
@@ -39,7 +38,7 @@ export const SubmitActions = () => {
       ) : (
         <p className='italic'>Admin is disconnect, please wait him to return</p>
       )}
-      <LeavePollDialog />
+      <LeavePollConfirmation />
     </>
   )
 }

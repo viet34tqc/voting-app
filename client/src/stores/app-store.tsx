@@ -1,4 +1,5 @@
 import { getMe } from '@/apis/getMe'
+import { toast } from '@/components/ui/toast/use-toast'
 import { initSocket } from '@/lib/initSocket'
 import { AppStep } from '@/lib/types'
 import { accessTokenConfig } from '@/lib/utils'
@@ -58,6 +59,9 @@ export const useAppStoreBase = create<AppStore>((set, get) => ({
       !updatedPoll.participants[currentUser.userId]
     ) {
       get().reset()
+      toast({
+        title: 'You have been kicked out of the poll',
+      })
     }
   },
   initSocket: async () => {
@@ -74,7 +78,6 @@ export const useAppStoreBase = create<AppStore>((set, get) => ({
   reset: () => {
     get().socket?.disconnect()
     accessTokenConfig.remove()
-    console.log('initialState', initialState)
     set(initialState)
   },
 }))

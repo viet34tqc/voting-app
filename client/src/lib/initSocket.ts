@@ -31,6 +31,13 @@ export const initSocket: (state: AppStore) => Socket | null = (state: AppStore) 
     })
   })
 
+  socket.on('poll_cancelled', (note: string) => {
+    state.reset()
+    toast({
+      title: note,
+    })
+  })
+
   // When there is a new participant, server updated the poll and send 'poll_updated' event to all clients
   // Then, we need to update the poll in the store
   socket.on('poll_updated', (poll: Poll) => {

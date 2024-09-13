@@ -10,9 +10,10 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button/buttonVariants'
 import { useAppStore } from '@/stores/app-store'
 
-export const LeavePollDialog = () => {
+export const LeavePollConfirmation = () => {
   const reset = useAppStore.reset()
 
   return (
@@ -31,7 +32,9 @@ export const LeavePollDialog = () => {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={reset}>Leave</AlertDialogAction>
+          <AlertDialogAction className={buttonVariants({ variant: 'destructive' })} onClick={reset}>
+            Leave
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
