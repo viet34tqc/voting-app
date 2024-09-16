@@ -2,9 +2,9 @@ import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { Users } from 'lucide-react'
 import { Participants } from 'voting-app-shared'
-import ParticipantList from '../participant-list'
+import ParticipantList from './participant-list'
 
-const ParticipantSheet = ({ participants }: { participants: Participants }) => {
+const ParticipantDrawer = ({ participants }: { participants: Participants }) => {
   const participantsLength = Object.keys(participants).length
   /*
    * Why I'm using Sheet instead of Dialog?
@@ -32,4 +32,4 @@ const ParticipantSheet = ({ participants }: { participants: Participants }) => {
   )
 }
 
-export default ParticipantSheet
+export default ParticipantDrawer
