@@ -134,6 +134,7 @@ export class PollsGateway
     const updatedPoll = await this.pollsService.addNomination({
       pollId: client.pollId,
       userId: client.userId,
+      userName: client.userName,
       text: nomination.text,
     });
 

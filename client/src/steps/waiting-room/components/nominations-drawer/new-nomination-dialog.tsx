@@ -6,11 +6,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+import { useState } from 'react'
 import NewNominationForm from './new-nomination-form'
 
 const NewNominationDialog = () => {
+  const [open, setOpen] = useState(false)
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>Add Nomination</Button>
       </DialogTrigger>
@@ -18,7 +20,7 @@ const NewNominationDialog = () => {
         <DialogHeader>
           <DialogTitle>Add nomination</DialogTitle>
         </DialogHeader>
-        <NewNominationForm />
+        <NewNominationForm setOpen={setOpen} />
       </DialogContent>
     </Dialog>
   )

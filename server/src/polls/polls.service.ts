@@ -89,11 +89,12 @@ export class PollsService {
     return this.pollsRepository.addParticipant(addParticipant);
   }
 
-  addNomination({ pollId, userId, text }: AddNominationField) {
+  addNomination({ pollId, userId, userName, text }: AddNominationField) {
     return this.pollsRepository.addNomination({
       pollId,
       nomination: {
         userId,
+        userName,
         text,
       },
       nominationId: createNominationId(),

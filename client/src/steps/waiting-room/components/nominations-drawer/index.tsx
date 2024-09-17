@@ -3,6 +3,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/co
 import { PenSquare } from 'lucide-react'
 import { Nominations } from 'voting-app-shared'
 import NewNominationDialog from './new-nomination-dialog'
+import NominationList from './nomination-list'
 
 export const NominationsDrawer = ({ nominations }: { nominations: Nominations }) => {
   const nominationsLength = Object.keys(nominations).length
@@ -23,6 +24,7 @@ export const NominationsDrawer = ({ nominations }: { nominations: Nominations })
           <SheetTitle>Nominations</SheetTitle>
         </SheetHeader>
         <NewNominationDialog />
+        <NominationList nominations={nominations} />
       </SheetContent>
     </Sheet>
   )

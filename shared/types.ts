@@ -4,6 +4,7 @@ export type Participants = {
 
 export type Nomination = {
   userId: string
+  userName: string
   text: string
 }
 

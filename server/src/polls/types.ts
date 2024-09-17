@@ -26,6 +26,7 @@ export type AddNominationData = {
 export type AddNominationField = {
   pollId: string;
   userId: string;
+  userName: string;
   text: string;
 };
 
