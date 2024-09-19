@@ -11,16 +11,13 @@ export const SubmitActions = () => {
 
   const participants = currentPoll.participants
   const nominations = currentPoll.nominations
+  const canStartVote = Object.keys(nominations).length >= currentPoll.votesPerVoter
 
   return currentUser.isAdmin ? (
     <>
       <p className='italic'>{currentPoll.votesPerVoter} Nominations Required to Start!</p>
       <div className='space-y-3'>
-        <Button
-          className='w-full'
-          variant='outline'
-          disabled={Object.keys(nominations).length === 0}
-        >
+        <Button className='w-full' variant='outline' disabled={!canStartVote}>
           Start Voting
         </Button>
         <CancelPollConfirmation />
