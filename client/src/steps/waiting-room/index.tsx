@@ -32,33 +32,31 @@ const WaitingRoom = () => {
   const nominations = currentPoll.nominations
   const pollId = currentPoll.id
   return (
-    <div className='shadow-lg rounded-lg overflow-auto'>
-      <div className='p-6 space-y-6'>
-        <div className='text-center'>
-          <h2 className='text-2xl font-bold text-gray-800'>Poll Topic</h2>
-          <p className='text-gray-600 italic'>{currentPoll.topic}</p>
-        </div>
-
-        <div className='space-y-2'>
-          <p className='text-gray-700 font-semibold'>Poll ID</p>
-          <Button
-            variant='ghost'
-            className='flex items-center w-full justify-between bg-gray-100 p-2 rounded'
-            onClick={() => copyPollId(pollId)}
-          >
-            <span className='text-gray-800 font-mono'>{pollId}</span>
-            <Copy className='h-4 w-4' />
-            <span className='sr-only'>Copy Poll ID</span>
-          </Button>
-        </div>
-
-        <div className='flex justify-center space-x-4'>
-          <ParticipantDrawer participants={participants} />
-          <NominationsDrawer nominations={nominations} />
-        </div>
-
-        <SubmitActions />
+    <div className='shadow-lg rounded-lg overflow-auto p-6 space-y-6 text-center w-96 max-w-full'>
+      <div>
+        <h2 className='text-2xl font-bold text-gray-800'>Poll Topic</h2>
+        <p className='text-gray-600 italic'>{currentPoll.topic}</p>
       </div>
+
+      <div className='space-y-2'>
+        <p className='text-left text-gray-700 font-semibold'>Poll ID</p>
+        <Button
+          variant='ghost'
+          className='flex items-center w-full justify-between bg-gray-100 p-2 rounded'
+          onClick={() => copyPollId(pollId)}
+        >
+          <span className='text-gray-800 font-mono'>{pollId}</span>
+          <Copy className='h-4 w-4' />
+          <span className='sr-only'>Copy Poll ID</span>
+        </Button>
+      </div>
+
+      <div className='flex justify-center space-x-4'>
+        <ParticipantDrawer participants={participants} />
+        <NominationsDrawer nominations={nominations} />
+      </div>
+
+      <SubmitActions />
     </div>
   )
 }

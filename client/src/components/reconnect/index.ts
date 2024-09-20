@@ -7,8 +7,14 @@ const Reconnect = () => {
   const setCurrentStep = useAppStore.setCurrentStep()
 
   useEffect(() => {
-    if (currentPoll && currentUser && !currentPoll?.hasStarted) {
+    if (!currentPoll || !currentUser) {
+      return
+    }
+
+    if (!currentPoll.hasStarted) {
       setCurrentStep('waitingRoom')
+    } else if (currentPoll.hasStarted) {
+      setCurrentStep('voting')
     }
   }, [currentPoll, currentUser, setCurrentStep])
 

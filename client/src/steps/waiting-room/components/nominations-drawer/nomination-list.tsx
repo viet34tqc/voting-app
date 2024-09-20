@@ -10,7 +10,7 @@ const NominationList = ({ nominations }: { nominations: Nominations }) => {
             <span className='font-medium'>{nomination.text}</span>
             <DeleteNominationConfirmation nominationId={nominationId} />
           </div>
-          <div className='text-sm text-gray-600'>Nominated by: {nomination.userName}</div>
+          <p className='text-sm text-gray-600'>Nominated by: {nomination.userName}</p>
         </li>
       ))}
     </ul>
