@@ -82,10 +82,6 @@ export class PollsRepository {
 
       this.logger.verbose(currentPoll);
 
-      // if (currentPoll?.hasStarted) {
-      //   throw new BadRequestException('The poll has already started');
-      // }
-
       return JSON.parse(currentPoll);
     } catch (e) {
       this.logger.error(`Failed to get pollId ${pollId}`, e);

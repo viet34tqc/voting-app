@@ -60,6 +60,9 @@ export class PollsService {
       `Fetching poll with ID: ${joinPollDto.pollId} for user with ID: ${userId}`,
     );
     const joinedPoll = await this.pollsRepository.getPoll(joinPollDto.pollId);
+    if (joinedPoll?.hasStarted) {
+      throw new BadRequestException('The poll has already started');
+    }
     const accessToken = this.jwtService.sign(
       {
         pollId: joinedPoll.id,
@@ -105,7 +108,7 @@ export class PollsService {
     const poll = await this.pollsRepository.getPoll(pollId);
 
     // Only remove if the poll hasn't started yet
-    if (!poll.hasStarted) {
+    if (!poll?.hasStarted) {
       return this.pollsRepository.removeParticipant(pollId, userId);
     }
   }

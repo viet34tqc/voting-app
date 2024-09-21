@@ -18,6 +18,9 @@ const VotingPage = () => {
     }
   }
 
+  const canSubmitVote = selectedNominations.length === currentPoll.votesPerVoter
+  const remainingVotes = currentPoll.votesPerVoter - selectedNominations.length
+
   return (
     <div className='shadow-lg rounded-lg overflow-auto p-6 space-y-6 text-center w-96 max-w-full'>
       <div>
@@ -27,7 +30,7 @@ const VotingPage = () => {
         </p>
       </div>
 
-      <p className='font-semibold'>{currentPoll.votesPerVoter} vote(s) remaining</p>
+      <p className='font-semibold'>{remainingVotes} vote(s) remaining</p>
       <div className='flex flex-col gap-2'>
         {Object.entries(currentPoll.nominations).map(([nominationId, nomination]) => {
           const index = selectedNominations.indexOf(nominationId)
@@ -55,7 +58,7 @@ const VotingPage = () => {
         })}
       </div>
 
-      <SubmitActions />
+      <SubmitActions canSubmitVote={canSubmitVote} selectedNominations={selectedNominations} />
     </div>
   )
 }

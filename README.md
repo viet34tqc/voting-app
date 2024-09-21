@@ -27,12 +27,16 @@ This is a small real-time voting app that allows user to connect to a room, subm
 
 - The host can create a topic and add nomination. They can also set the maximum number of participants.
 - After creating the poll, the host sends its ID to other users so they can join and add their own nomination.
-- Users join the poll via Websocket.
+- Users join the poll via Websocket only if the poll hasn't started yet
 - If users have closed the tab, they can re-join via `pollId` and receive the current state of the poll
 - Only the host can start, end or cancel the poll. When the host cancel the poll, all the participants will be kicked out of the poll
 - After the poll ends, a screen displays the results.
 
 ## BE Architecture
+
+### Auth module
+
+- This module is used to return the participant data when they connect to a poll
 
 ### Poll module
 
