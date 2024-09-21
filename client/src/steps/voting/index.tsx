@@ -24,7 +24,7 @@ const VotingPage = () => {
   return (
     <div className='shadow-lg rounded-lg overflow-auto p-6 space-y-6 text-center w-96 max-w-full'>
       <div>
-        <h2 className='text-2xl font-bold text-gray-800'>Voting page</h2>
+        <h1 className='text-2xl font-bold text-gray-800'>Voting page</h1>
         <p className='text-gray-600 italic'>
           Select your top {currentPoll.votesPerVoter} choice(s)
         </p>

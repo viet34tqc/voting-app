@@ -19,9 +19,6 @@ export const SubmitActions = ({
 
   return (
     <div className='space-y-3'>
-      {!currentPoll.participants[currentPoll.adminId] && (
-        <p className='italic'>Admin is disconnect, please wait him to return</p>
-      )}
       <Button
         className='w-full'
         variant='outline'

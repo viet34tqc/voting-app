@@ -1,7 +1,7 @@
 import { getMe } from '@/apis/getMe'
 import { toast } from '@/components/ui/toast/use-toast'
 import { initSocket } from '@/lib/initSocket'
-import { AppStep } from '@/lib/types'
+import { AppStep } from '@/lib/stepsConfig'
 import { accessTokenConfig } from '@/lib/utils'
 import type { Socket } from 'socket.io-client'
 import { Poll, User } from 'voting-app-shared'

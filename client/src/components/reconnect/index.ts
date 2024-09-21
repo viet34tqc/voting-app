@@ -13,8 +13,12 @@ const Reconnect = () => {
 
     if (!currentPoll.hasStarted) {
       setCurrentStep('waitingRoom')
-    } else if (currentPoll.hasStarted) {
+    }
+    if (currentPoll.hasStarted) {
       setCurrentStep('voting')
+    }
+    if (currentPoll.votes[currentUser.userId]) {
+      setCurrentStep('results')
     }
   }, [currentPoll, currentUser, setCurrentStep])
 
