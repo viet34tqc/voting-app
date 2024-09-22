@@ -197,7 +197,7 @@ export class PollsGateway
   }
 
   @UseGuards(PollsWsGuard)
-  @SubscribeMessage('close_poll')
+  @SubscribeMessage('end_poll')
   async closePoll(@ConnectedSocket() client: SocketWithAuth): Promise<void> {
     this.logger.debug(`Closing poll: ${client.pollId} and computing results`);
 

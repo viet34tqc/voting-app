@@ -35,6 +35,7 @@ export const getResults = (
     score,
   }));
 
-  results.sort((result1, result2) => result1.score - result2.score);
+  // Sort results by score from highest to lowest
+  results.sort((result1, result2) => result2.score - result1.score);
   return results;
 };

@@ -19,9 +19,7 @@ export const LeavePollConfirmation = () => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button className='w-full' variant='secondary'>
-          Leave Poll
-        </Button>
+        <Button className='w-full'>Leave Poll</Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
