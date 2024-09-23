@@ -32,7 +32,7 @@ const WaitingRoom = () => {
   const nominations = currentPoll.nominations
   const pollId = currentPoll.id
   return (
-    <div className='shadow-lg rounded-lg overflow-auto p-6 space-y-6 text-center w-96 max-w-full'>
+    <div className='page-animation shadow-lg rounded-lg overflow-auto p-6 space-y-6 text-center w-96 max-w-full'>
       <div>
         <h2 className='text-2xl font-bold text-gray-800'>Poll Topic</h2>
         <p className='text-gray-600 italic'>{currentPoll.topic}</p>

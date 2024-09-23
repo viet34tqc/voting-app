@@ -88,3 +88,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .page-animation {
+    @apply slide-in-from-top-4 animate-in fade-in;
+  }
+}

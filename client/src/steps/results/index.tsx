@@ -10,7 +10,7 @@ const Results = () => {
   const finalResults = currentPoll.results
 
   return (
-    <div className='shadow-lg rounded-lg overflow-auto p-6 space-y-6 text-center w-96 max-w-full'>
+    <div className='page-animation shadow-lg rounded-lg overflow-auto p-6 space-y-6 text-center w-96 max-w-full'>
       {finalResults.length === 0 ? (
         <WaitingScreen currentPoll={currentPoll} currentUser={currentUser} />
       ) : (

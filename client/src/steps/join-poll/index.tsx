@@ -18,6 +18,8 @@ import { useJoinPoll } from './mutations/use-join-poll'
 export default function CreatePoll() {
   const setCurrentStep = useAppStore.setCurrentStep()
   const updatePoll = useAppStore.updatePoll()
+  const reset = useAppStore.reset()
+
   const { mutate: joinPoll, isPending } = useJoinPoll()
   const form = useForm<JoinPollFields>({
     resolver: zodResolver(joinPollSchema),
@@ -47,7 +49,7 @@ export default function CreatePoll() {
   }
 
   return (
-    <div className='space-y-6'>
+    <div className='space-y-6 page-animation'>
       <div className='space-y-2'>
         <h1 className='text-3xl font-bold'>Join existing poll</h1>
         <p className='text-muted-foreground'>
@@ -82,7 +84,7 @@ export default function CreatePoll() {
           />
 
           <div className='flex justify-between'>
-            <Button type='button' variant='outline' onClick={() => form.reset()}>
+            <Button type='button' variant='outline' onClick={reset}>
               Reset
             </Button>
             <Button disabled={isPending}>Join</Button>

@@ -11,7 +11,7 @@ const FinalResults = ({ currentPoll }: { currentPoll: Poll }) => {
       </div>
       <div className='space-y-2'>
         {currentPoll.results.map((result, index) => (
-          <div className='bg-gray-100 rounded-lg p-4 space-y-1' key={result.nominationId}>
+          <div className='bg-gray-100 rounded-lg p-4 space-y-1 shadow-md' key={result.nominationId}>
             <div className='flex justify-between items-center'>
               <div className='font-medium flex items-center'>
                 {index === 0 && <Award className='h-5 w-5 text-yellow-500 mr-2' />}
