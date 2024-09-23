@@ -1,7 +1,5 @@
-import { Request } from 'express';
 import { Socket } from 'socket.io';
 import { Nomination, NominationId } from 'voting-app-shared';
-import { RejoinPollDto } from './dto/rejoin-poll.dto';
 
 // repository types
 export type CreatePollData = {
@@ -37,5 +35,8 @@ export type voteNominationsData = {
 };
 
 // We are adding the AuthPayload to the Request type so that we can use it in the guards
-export type RequestWithAuth = Request & RejoinPollDto;
-export type SocketWithAuth = Socket & RejoinPollDto;
+export type SocketWithAuth = Socket & {
+  pollId: string;
+  userId: string;
+  userName: string;
+};

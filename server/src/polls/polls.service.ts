@@ -2,7 +2,6 @@ import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { CreatePollDto } from './dto/create-poll.dto';
 import { JoinPollDto } from './dto/join-poll.dto';
-import { RejoinPollDto } from './dto/rejoin-poll.dto';
 import { PollsRepository } from './polls.repository';
 import {
   AddNominationField,
@@ -76,16 +75,6 @@ export class PollsService {
       poll: joinedPoll,
       accessToken,
     };
-  }
-
-  async rejoin(rejoinDto: RejoinPollDto) {
-    this.logger.debug(
-      `Rejoining poll with ID: ${rejoinDto.pollId} for user with Id: ${rejoinDto.userId} with name: ${rejoinDto.userName}`,
-    );
-
-    const joinedPoll = await this.pollsRepository.addParticipant(rejoinDto);
-
-    return joinedPoll;
   }
 
   addParticipant(addParticipant: AddParticipantData) {
