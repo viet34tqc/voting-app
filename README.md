@@ -55,6 +55,27 @@ This is a small real-time voting app that allows user to connect to a room, subm
   - Handle the authentication using socket io middleware
   - Handle CORS. Of course, we can set CORS directly in the gateway but we aren't able to get the CLIENT_HOST from .env file. By using adapter, we can extract the environment variable from ConfigService
 
+## How the app works
+
+The app only has APIs for creating and joining the poll. Other events will be implemented by Websocket
+
+- Create Poll
+  - Call 'create poll' API
+  - API returns created poll
+  - Save access token to local storage
+  - Move to waiting room
+  - Init socket using access token from local storage
+- Join Poll: similar to create poll, except for using 'join poll' API
+- Connect to the poll
+  - User connects to the poll with token (via WS)
+  - Socket.io Adapter verifies and extracts token to get 'userId', 'userName', 'pollId'
+  - Update the poll by adding participants
+- Delete participant, delete nomination, start, cancel or end the poll
+  - These events are guarded and only admin can implement them.
+  - For example, admin sends a delete event
+  - Poll WS guard verifies and extract token to see if the user is admin
+  - If not, throw error
+
 ## What I learnt
 
 - How to use RedisJSON
