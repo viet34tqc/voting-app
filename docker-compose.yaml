@@ -4,7 +4,7 @@ services:
   client:
     build: ./client
     ports:
-      - "3000:3000"
+      - '3000:3000'
     depends_on:
       - server
     environment:
@@ -14,7 +14,7 @@ services:
   server:
     build: ./server
     ports:
-      - "8000:8000"
+      - '8000:8000'
     depends_on:
       - redis
     environment:
@@ -23,17 +23,9 @@ services:
     restart: always
 
   redis:
-    image: redis:latest
+    image: 'redis/redis-stack-server:latest'
     ports:
-      - "6379:6379"
+      - '6379:6379'
     restart: always
-
-  nginx:
-    image: nginx:latest
-    ports:
-      - "80:80"
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-    depends_on:
-      - client
-    restart: always
+      - 'redis-data:/data'

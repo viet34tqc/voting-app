@@ -1,23 +1,30 @@
-# Use an official Node.js image as a base
-FROM node:20-alpine
-
-# Set the working directory to /app
+# Build the server
+FROM node:20-alpine AS builder
 WORKDIR /app
 
-# Copy the package*.json files to the working directory
-COPY package*.json ./
+# Enable corepack to manage pnpm versions
+RUN corepack enable
 
-# Install the dependencies
-RUN npm install --production
+COPY pnpm-lock.yaml ./
+COPY package.json ./
+RUN pnpm install --frozen-lockfile --prod
 
-# Copy the application code to the working directory
 COPY . .
 
-# Build the application for production
-RUN npm run build
+RUN pnpm run build
 
-# Expose the port
+# Prune unnecessary dependencies specified in devDependencies.
+RUN pnpm prune --prod
+
+# Create the production image
+FROM node:20-alpine AS production
+WORKDIR /app
+
+# Copy built app and pruned node_modules
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
+
 EXPOSE 8000
 
-# Run the command to start the production server
-CMD ["npm", "start"]
+# Start the server
+CMD ["node", "dist/main.js"]

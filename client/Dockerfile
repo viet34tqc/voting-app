@@ -1,16 +1,25 @@
-FROM node:20-alpine
-
+# Build the client
+FROM node:20-alpine AS builder
 WORKDIR /app
 
-COPY package*.json ./
+# Enable corepack to manage pnpm versions
+RUN corepack enable
 
-RUN npm install --production
+COPY pnpm-lock.yaml ./
+COPY package.json ./
+RUN pnpm install --frozen-lockfile
 
 COPY . .
 
-RUN npm run build
+RUN pnpm run build
 
-# Expose the port
+# Serve the client using Nginx
+FROM nginx:alpine AS production
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Copy custom Nginx config if needed
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Optimize Nginx for production
 EXPOSE 3000
-
-CMD ["npm", "start"]
+CMD ["nginx", "-g", "daemon off;"]
