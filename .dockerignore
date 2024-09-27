@@ -1,0 +1,14 @@
+node_modules
+**/node_modules/
+**/pnpm-lock.yaml
+.git
+.gitignore
+.prettierignore
+.prettierrc
+*.md
+**/dist
+
+# Docker-related files
+docker-compose.yml
+.docker/
+.dockerignore

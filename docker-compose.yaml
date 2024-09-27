@@ -1,25 +1,26 @@
-version: '3'
-
 services:
   client:
     build: ./client
     ports:
-      - '3000:3000'
+      - '5173:5173'
     depends_on:
       - server
+    env_file:
+      - ./client/.env
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=production # for optimization
     restart: always
 
   server:
     build: ./server
     ports:
-      - '8000:8000'
+      - '3000:3000'
     depends_on:
       - redis
+    env_file:
+      - ./server/.env
     environment:
       - NODE_ENV=production
-      - DATABASE_URL=redis://redis:6379
     restart: always
 
   redis:
@@ -28,4 +29,6 @@ services:
       - '6379:6379'
     restart: always
     volumes:
-      - 'redis-data:/data'
+      - 'redis_data:/data'
+volumes:
+  redis_data:
