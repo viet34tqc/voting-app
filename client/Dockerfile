@@ -5,21 +5,21 @@ WORKDIR /app
 # Enable corepack to manage pnpm versions
 RUN corepack enable
 
-COPY pnpm-lock.yaml ./
-COPY package.json ./
-RUN pnpm install --frozen-lockfile
-
 COPY . .
 
+RUN pnpm install --frozen-lockfile --ignore-scripts
+
+# Build the client application
+WORKDIR /app/client
 RUN pnpm run build
 
 # Serve the client using Nginx
 FROM nginx:alpine AS production
-COPY --from=builder /app/dist /usr/share/nginx/html
+COPY --from=builder /app/client/dist /usr/share/nginx/html
 
 # Copy custom Nginx config if needed
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY client/nginx.conf /etc/nginx/nginx.conf
 
 # Optimize Nginx for production
-EXPOSE 3000
+EXPOSE 5173
 CMD ["nginx", "-g", "daemon off;"]

@@ -1,6 +1,8 @@
 services:
   client:
-    build: ./client
+    build:
+      context: .
+      dockerfile: client/Dockerfile
     ports:
       - '5173:5173'
     depends_on:
@@ -9,10 +11,12 @@ services:
       - ./client/.env
     environment:
       - NODE_ENV=production # for optimization
-    restart: always
+    #restart: always
 
   server:
-    build: ./server
+    build:
+      context: .
+      dockerfile: server/Dockerfile
     ports:
       - '3000:3000'
     depends_on:
@@ -21,7 +25,7 @@ services:
       - ./server/.env
     environment:
       - NODE_ENV=production
-    restart: always
+    #restart: always
 
   redis:
     image: 'redis/redis-stack-server:latest'

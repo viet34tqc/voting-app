@@ -1,30 +1,41 @@
-# Build the server
-FROM node:20-alpine AS builder
+# Build stage
+FROM node:20-alpine as build
+
 WORKDIR /app
 
 # Enable corepack to manage pnpm versions
 RUN corepack enable
 
-COPY pnpm-lock.yaml ./
-COPY package.json ./
-RUN pnpm install --frozen-lockfile --prod
-
+# Copy the entire monorepo
 COPY . .
 
+# Install dependencies
+RUN pnpm install --frozen-lockfile --ignore-scripts
+
+# Build the server application
+WORKDIR /app/server
 RUN pnpm run build
 
-# Prune unnecessary dependencies specified in devDependencies.
-RUN pnpm prune --prod
+# Production stage
+FROM node:20-alpine
 
-# Create the production image
-FROM node:20-alpine AS production
 WORKDIR /app
 
-# Copy built app and pruned node_modules
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
+# Install pnpm
+RUN corepack enable
 
-EXPOSE 8000
+# Copy package.json and pnpm-lock.yaml from the monorepo root
+COPY package.json pnpm-lock.yaml ./
 
-# Start the server
-CMD ["node", "dist/main.js"]
+# Install production dependencies
+RUN pnpm install --frozen-lockfile --prod --ignore-scripts
+
+# Copy the built server application
+COPY --from=build /app/server/dist ./dist
+
+# Copy the shared folder
+COPY --from=build /app/shared ./shared
+
+EXPOSE 3000
+
+CMD ["node", "dist/main"]
