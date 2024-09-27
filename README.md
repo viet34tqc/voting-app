@@ -12,7 +12,6 @@ This is a small real-time voting app that allows user to connect to a room, subm
   - ReactJs
   - Tailwind
   - Socket.io
-  - Tanstack Router, just for experiment. The client is just an simple app so I would recommend `Wouter`, which is a tiny routing package
 - Database: Redis, just for experiment. You can use Postgrest or MySQL instead
 
 ## How to run the project locally
