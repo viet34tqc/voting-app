@@ -1,6 +1,5 @@
 import { Inject, InternalServerErrorException, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import e from 'express';
 import Redis from 'ioredis';
 import { IORedisKey } from 'src/redis/redis.module';
 import { Poll, Results } from 'voting-app-shared';
@@ -116,10 +115,10 @@ export class PollsRepository {
         updatedPoll.participants,
       );
       return updatedPoll;
-    } catch (e) {
+    } catch (error) {
       this.logger.error(
         `Failed to add a participant with userId/userName: ${userId}/${userName} to pollId: ${pollId}`,
-        e,
+        error,
       );
       throw new InternalServerErrorException(
         `Failed to add a participant with userId/userName: ${userId}/${userName} to pollId: ${pollId}`,
@@ -153,7 +152,7 @@ export class PollsRepository {
     } catch (error) {
       this.logger.error(
         `Failed to add a nomination with nominationId/text: ${nominationId}/${nomination.text} to pollId: ${pollId}`,
-        e,
+        error,
       );
       throw new InternalServerErrorException(
         `Failed to add a nomination with nominationId/text: ${nominationId}/${nomination.text} to pollId: ${pollId}`,
@@ -173,7 +172,7 @@ export class PollsRepository {
     } catch (error) {
       this.logger.error(
         `Failed to remove userID: ${userId} from poll: ${pollId}`,
-        e,
+        error,
       );
       throw new InternalServerErrorException('Failed to remove participant');
     }
@@ -265,7 +264,7 @@ export class PollsRepository {
       this.logger.error(
         `Failed to add add results for pollId: ${pollId}`,
         results,
-        e,
+        error,
       );
       throw new InternalServerErrorException(
         `Failed to add add results for pollId: ${pollId}`,
@@ -280,7 +279,7 @@ export class PollsRepository {
     try {
       await this.redisClient.call('JSON.DEL', key);
     } catch (error) {
-      this.logger.error(`Failed to delete poll: ${pollId}`, e);
+      this.logger.error(`Failed to delete poll: ${pollId}`, error);
       throw new InternalServerErrorException(
         `Failed to delete poll: ${pollId}`,
       );

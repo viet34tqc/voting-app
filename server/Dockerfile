@@ -6,8 +6,14 @@ WORKDIR /app
 # Enable corepack to manage pnpm versions
 RUN corepack enable
 
-# Copy the entire monorepo
-COPY . .
+# Copy pnpm workspace files
+COPY pnpm-lock.yaml package.json pnpm-workspace.yaml ./
+
+# Copy the shared folder
+COPY shared ./shared
+
+# Copy the server package
+COPY server ./server
 
 # Install dependencies
 RUN pnpm install --frozen-lockfile --ignore-scripts
@@ -25,16 +31,18 @@ WORKDIR /app
 RUN corepack enable
 
 # Copy package.json and pnpm-lock.yaml from the monorepo root
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+
+# Copy the server package.json
+COPY --from=build /app/server/package.json ./server/
 
 # Install production dependencies
 RUN pnpm install --frozen-lockfile --prod --ignore-scripts
 
 # Copy the built server application
-COPY --from=build /app/server/dist ./dist
+COPY --from=build /app/server/dist ./server/dist
 
-# Copy the shared folder
-COPY --from=build /app/shared ./shared
+WORKDIR /app/server
 
 EXPOSE 3000
 
