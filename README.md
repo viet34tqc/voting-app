@@ -14,13 +14,18 @@ This is a small real-time voting app that allows user to connect to a room, subm
   - Socket.io
 - Database: Redis, just for experiment. You can use Postgrest or MySQL instead
 
-## How to run the project locally
+## How to run the project in development mode
 
-- Duplicate the `.env.example` file in the project root and rename the duplicate to `.env`.
+- Duplicate the `example.env` files in the 'client' and 'server' folder and rename the duplicates to `.env`.
 - Update the app ports in the `.env` file if needed to avoid port conflicts on your local machine.
 - Run `pnpm install` in the root folder
 - Open docker desktop or start your docker service. We need docker to run Redis
 - Run `pnpm dev` to start project
+
+## How to run the project using docker locally
+
+- Duplicate the `docker-example.env` files in the 'client' and 'server' folder and rename the duplicates to `.env.production`.
+- Run 'docker-compose up'
 
 ## Features
 
@@ -79,3 +84,5 @@ The app only has APIs for creating and joining the poll. Other events will be im
 
 - How to use RedisJSON
 - How to apply Websocket in NestJs
+- Dockerize a pnpm workspace project
+  - Connect to redis inside 'server' container: we can't use 'localhost' here because 'localhost' inside 'server' container is different from 'localhost' in the host machine. In development mode, where docker is not used, 'server' and 'redis' use the same localhost, which is the host machine. But in Docker environment, in order for 2 services to connect to each other directly, we need to use service name. Docker sets up a internal DNS system where service names in the docker-compose file can be used as hostnames. So the 'server' container should have referred to the redis container by the service name or container name
