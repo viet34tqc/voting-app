@@ -4,11 +4,9 @@ services:
       context: .
       dockerfile: client/Dockerfile
     ports:
-      - '5173:5173'
+      - '5173:80'
     depends_on:
       - server
-    env_file:
-      - ./client/.env
     environment:
       - NODE_ENV=production # for optimization
     #restart: always
@@ -19,13 +17,14 @@ services:
       dockerfile: server/Dockerfile
     ports:
       - '3000:3000'
+      - '8000:8000' # for websocket
     depends_on:
       - redis
     env_file:
-      - ./server/.env
+      - ./server/.env.production
     environment:
       - NODE_ENV=production
-    #restart: always
+    restart: always
 
   redis:
     image: 'redis/redis-stack-server:latest'

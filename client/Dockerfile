@@ -21,5 +21,5 @@ COPY --from=builder /app/client/dist /usr/share/nginx/html
 COPY client/nginx.conf /etc/nginx/nginx.conf
 
 # Optimize Nginx for production
-EXPOSE 5173
+EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

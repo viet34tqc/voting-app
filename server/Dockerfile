@@ -45,5 +45,6 @@ COPY --from=build /app/server/dist ./server/dist
 WORKDIR /app/server
 
 EXPOSE 3000
+EXPOSE 8000
 
 CMD ["node", "dist/main"]
