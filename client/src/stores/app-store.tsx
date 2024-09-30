@@ -31,7 +31,6 @@ const initialState = {
 
 export const useAppStoreBase = create<AppStore>((set, get) => ({
   ...initialState,
-  currentUser: null,
   setCurrentStep: (step: AppStep) => {
     set((state) => ({ ...state, currentStep: step }))
   },

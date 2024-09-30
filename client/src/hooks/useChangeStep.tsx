@@ -1,7 +1,7 @@
 import { useAppStore } from '@/stores/app-store'
 import { useEffect } from 'react'
 
-const Reconnect = () => {
+const useChangeStep = () => {
   const currentPoll = useAppStore.poll()
   const currentUser = useAppStore.currentUser()
   const setCurrentStep = useAppStore.setCurrentStep()
@@ -21,7 +21,6 @@ const Reconnect = () => {
       setCurrentStep('results')
     }
   }, [currentPoll, currentUser, setCurrentStep])
-
-  return null
 }
-export default Reconnect
+
+export default useChangeStep

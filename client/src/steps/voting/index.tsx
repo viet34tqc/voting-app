@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { toast } from '@/components/ui/toast/use-toast'
 import { useAppStore } from '@/stores/app-store'
 import { useState } from 'react'
 import { NominationId } from 'voting-app-shared'
@@ -10,16 +11,26 @@ const VotingPage = () => {
 
   if (!currentPoll) return <div>There is no poll. There might be an error</div>
 
-  const toggleSelectedNomination = (nominationId: NominationId) => {
+  const canSubmitVote = selectedNominations.length === currentPoll.votesPerVoter
+  const remainingVotes = currentPoll.votesPerVoter - selectedNominations.length
+
+  const handleNominate = (nominationId: NominationId) => {
     if (selectedNominations.includes(nominationId)) {
       setSelectedNominations(selectedNominations.filter((id) => id !== nominationId))
     } else {
+      if (remainingVotes === 0) {
+        toast({
+          title: 'Vote limit reached',
+          description:
+            'You have reached the vote limit. You can only select ' +
+            currentPoll.votesPerVoter +
+            ' nomination(s)',
+        })
+        return
+      }
       setSelectedNominations([...selectedNominations, nominationId])
     }
   }
-
-  const canSubmitVote = selectedNominations.length === currentPoll.votesPerVoter
-  const remainingVotes = currentPoll.votesPerVoter - selectedNominations.length
 
   return (
     <div className='page-animation shadow-lg rounded-lg overflow-auto p-6 space-y-6 text-center w-96 max-w-full'>
@@ -39,7 +50,7 @@ const VotingPage = () => {
               key={nominationId}
               className='justify-between items-center p-2 h-auto bg-gray-100 rounded-md'
               variant='ghost'
-              onClick={() => toggleSelectedNomination(nominationId)}
+              onClick={() => handleNominate(nominationId)}
             >
               <div className='flex flex-col justify-between items-start mb-1'>
                 <span className='font-medium'>{nomination.text}</span>
