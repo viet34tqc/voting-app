@@ -14,6 +14,10 @@ This is a small real-time voting app that allows user to connect to a room, subm
   - Socket.io
 - Database: Redis, just for experiment. You can use Postgrest or MySQL instead
 
+## Demo
+
+https://github.com/user-attachments/assets/1cca2b31-7f15-4bfb-8dc3-c8e58430a952
+
 ## How to run the project in development mode
 
 - Duplicate the `example.env` files in the 'client' and 'server' folder and rename the duplicates to `.env`.
