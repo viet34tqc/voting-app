@@ -15,10 +15,12 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { JoinPollFields, joinPollSchema } from './form-schema'
 import { useJoinPoll } from './mutations/use-join-poll'
-export default function CreatePoll() {
+
+export default function JoinPoll() {
   const setCurrentStep = useAppStore.setCurrentStep()
   const updatePoll = useAppStore.updatePoll()
   const reset = useAppStore.reset()
+  const initSocket = useAppStore.initSocket()
 
   const { mutate: joinPoll, isPending } = useJoinPoll()
   const form = useForm<JoinPollFields>({
@@ -37,6 +39,7 @@ export default function CreatePoll() {
         })
         accessTokenConfig.set(data.accessToken)
         updatePoll(data.poll)
+        initSocket()
         setCurrentStep('waitingRoom')
       },
       onError: (error) => {

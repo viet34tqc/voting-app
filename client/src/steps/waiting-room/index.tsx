@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { useAppStore } from '@/stores/app-store'
 import { Copy } from 'lucide-react'
-import { useEffect } from 'react'
 import { NominationsDrawer } from './components/nominations-drawer'
 import ParticipantDrawer from './components/participants-drawer'
 import { SubmitActions } from './components/submit-actions'
@@ -16,13 +15,6 @@ const copyPollId = (text: string) => {
 const WaitingRoom = () => {
   const currentPoll = useAppStore.poll()
   const currentUser = useAppStore.currentUser()
-
-  const initSocket = useAppStore.initSocket()
-  useEffect(() => {
-    if (!currentUser) {
-      initSocket()
-    }
-  }, [initSocket, currentUser])
 
   if (!currentUser) return <div>Failed to load user</div>
 

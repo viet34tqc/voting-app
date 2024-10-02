@@ -20,6 +20,7 @@ export default function CreatePoll() {
   const setCurrentStep = useAppStore.setCurrentStep()
   const updatePoll = useAppStore.updatePoll()
   const reset = useAppStore.reset()
+  const initSocket = useAppStore.initSocket()
 
   const form = useForm<CreatePollFields>({
     resolver: zodResolver(createPollSchema),
@@ -40,6 +41,7 @@ export default function CreatePoll() {
         })
         updatePoll(data.poll)
         accessTokenConfig.set(data.accessToken)
+        initSocket()
         setCurrentStep('waitingRoom')
       },
       onError: (error) => {
