@@ -28,7 +28,7 @@ https://github.com/user-attachments/assets/1cca2b31-7f15-4bfb-8dc3-c8e58430a952
 
 ## How to run the project using docker locally
 
-- Duplicate the `docker-example.env` files in the 'client' and 'server' folder and rename the duplicates to `.env.production`.
+- Duplicate the `example.env` file in the 'client' folder and `docker-example.env` file in 'server' folder and rename the duplicates to `.env.production`.
 - Run 'docker-compose up'
 
 ## Features
