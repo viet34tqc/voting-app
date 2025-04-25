@@ -12,7 +12,7 @@ This is a small real-time voting app that allows user to connect to a room, subm
   - ReactJs
   - Tailwind
   - Socket.io
-- Database: Redis, just for experiment. You can use Postgrest or MySQL instead
+- Database: Redis, just for experiment. You can use Postgres or MySQL instead
 
 ## Demo
 
